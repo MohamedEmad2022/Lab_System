@@ -1,23 +1,29 @@
 import { Layout, ConfigProvider, Switch, Typography, Row, Col } from 'antd';
-import { useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'antd/dist/reset.css';
 
 import AppRoutes from './components/AppRoutes';
 import SideBar from './components/sideBar';
 import NavBar from './components/navBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { getThemeMode, themeMode } from './store/Theme/themeSlice';
+import Register from './pages/Auth/Register';
+import LogIn from './pages/Auth/login';
+import { isAuthentication } from './components/isAuthentication';
 
 function App() {
 
-  const { Header, Footer, Sider, Content } = Layout;
-  const [theme, setTheme] = useState("light")
+
+  const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
 
   const lightTheme = {
     token: {
 
       colorBgBase: '#fff',
-
+      
     }
   }
   const darkTheme = {
@@ -25,55 +31,40 @@ function App() {
 
       colorBgBase: '#001529',
       colorText: 'white',
+      colorTextQuaternary: '#aeb0af',
+      controlOutlineWidth: "0",
+      colorPrimaryBg: "#010252",
+      colorPrimaryBgHover: "black",
+      colorErrorBg: "#ff4d4f"
     }
   }
 
-  const changeTheme = (checked) => {
-    if (checked) {
+  
+  useEffect(() => {
+    dispatch(getThemeMode())
+  }, [dispatch])
 
-      setTheme('dark')
-    } else {
-
-      setTheme('light')
-    }
-  }
 
   return (
     <>
-      <ConfigProvider direction='rtl' theme={theme === "dark" ? darkTheme : lightTheme}>
-        <BrowserRouter>
-          <Layout className='container'>
-            <Sider theme='light' >
-              <SideBar />
-            </Sider>
-            <Layout>
-              <Header>
-                <Row justify='space-between'>
-                  <Col>
-                    <NavBar />
-                  </Col>
-                  <Col>
-                    <Switch onChange={changeTheme} />
-                  </Col>
-                </Row>
 
+      <BrowserRouter>
 
-              </Header>
-              <Content>
-                <Row justify='center'>
-                  <Col span={22} style={{paddingTop: '20px'}}>
-                  <AppRoutes />
-                  </Col>
-                </Row>
-                
-              </Content>
+        {isAuthentication() ? (
+          <ConfigProvider direction='rtl' theme={theme === "dark" ? darkTheme : lightTheme}>
+          <AppRoutes />
+          </ConfigProvider>
+      )
+      :
 
-              <Footer>Footer</Footer>
-            </Layout>
+      <Routes>
+        <Route path='/register' element={<Register />} />
+        <Route path='/' element={<LogIn />} />
 
-          </Layout>
-        </BrowserRouter>
-      </ConfigProvider>
+      </Routes>
+          }
+    </BrowserRouter>
+      
 
     </>
   );

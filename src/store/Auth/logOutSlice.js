@@ -1,62 +1,55 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import config from "../../config";
 
-
-
-
-export const LoginHand = createAsyncThunk("login/LoginHand", async (userData, thunkAPI) => {
+export const LogOutHand = createAsyncThunk("logout/LogOutHand", async (token, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue, dispatch } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/login`,{
+        const response = await fetch(`${config.apiUrl}/logout`,{
             method: "POST",
-            body: JSON.stringify(userData),
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application/json"
+                Authorization: `Bearer ${token}`
             }
             
         })
-        
         const data = await response.json();
         if (!response.ok) {
             return rejectWithValue(data.error)
         }else{
-            dispatch(authentication(data.data))
-            window.location.reload()
+            dispatch(unauthentication())
             return fulfillWithValue(data)
         }
-        
-            
 
+    
     }catch(error){
         throw rejectWithValue(error.message)
     }
     })
 
 
-    export const LoginSlice = createSlice({
-        name: "login",
+    export const LogoutSlice = createSlice({
+        name: "logout",
         initialState: { user: null, error: null, loading: false},
         reducers: {
-            authentication: (state, action)=>{
+            unauthentication: ()=>{
                 if(typeof window !== "undefined"){
-                    localStorage.setItem("jwt", JSON.stringify(action.payload))
+                    localStorage.removeItem("jwt");
                 }
             },
             
     },
         extraReducers:{
-            [LoginHand.pending]: (state, action) => {
+            [LogOutHand.pending]: (state, action) => {
                 state.loading = true
                 
             },
-            [LoginHand.fulfilled]: (state, action) => {
+            [LogOutHand.fulfilled]: (state, action) => {
                 state.loading = false
-                state.user = action.payload
+                state.user = null
                 console.log(action)
                 
             },
-            [LoginHand.rejected]: (state, action) => {
+            [LogOutHand.rejected]: (state, action) => {
 
                 state.loading = false
                 state.error = action.payload
@@ -65,5 +58,5 @@ export const LoginHand = createAsyncThunk("login/LoginHand", async (userData, th
         }
     })
 
-    export default LoginSlice.reducer;
-    export const {authentication} = LoginSlice.actions
+    export default LogOutHand.reducer;
+    export const {unauthentication} = LogoutSlice.actions

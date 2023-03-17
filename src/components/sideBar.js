@@ -2,6 +2,7 @@ import { Menu } from 'antd'
 import Typography from 'antd/es/typography/Typography';
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { isAuthentication } from './isAuthentication';
 
 const SideBar = () => {
 
@@ -9,7 +10,7 @@ const SideBar = () => {
       const items = [
        {
         key: '1',
-        label: <Link to={'/'}>لوحة التحكم</Link>,
+        label: <Link to={'/dashBoard'}>لوحة التحكم</Link>,
 
        },
        {
@@ -18,12 +19,20 @@ const SideBar = () => {
         children: [
           {
             key: 'add',
-            label: <Link to={'/Reception/addPatient'}>اضافة مريض</Link>
+            label: <Link to={'/patientFile'}>ملف المرضى</Link>
           },
           {
-            key: 'sa',
-            label: <Link to={'/Reception/addPatient'}>الخزينه</Link>
-          }
+            key: 'tt',
+            label: <Link to={'/toothType'}>ملف مواد التركيبات</Link>
+          },
+          {
+            key: 'ct',
+            label: <Link to={'/colorType'}>ملف الوان التركيبات</Link>
+          },
+          {
+            key: 'df',
+            label: <Link to={'/doctorFile'}>ملف الاطباء</Link>
+          },
         ]
        } 
       ]
@@ -31,13 +40,17 @@ const SideBar = () => {
       
   return (
     <>
-    <Typography.Title level={2}>Tepsa Lap</Typography.Title>
+    <Typography.Title level={2}>اوميجا لاب</Typography.Title>
 
-        <Menu
-        mode="inline"
-        items={items}
-        >
-        </Menu>
+        {isAuthentication() ? 
+      <Menu
+      mode="inline"
+      items={items}
+      >
+      </Menu>
+      :
+      ""  
+      }
     </>
   )
 }
