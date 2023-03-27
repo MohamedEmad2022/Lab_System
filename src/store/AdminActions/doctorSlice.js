@@ -138,7 +138,7 @@ export const DoctorSlice = createSlice({
         },
         [GetDoctors.fulfilled]: (state, action) => {
             state.loading = false
-            state.doctors = action.payload
+            state.doctors = action.payload.data.data
             state.fetchDoctors = 'fetch'
             console.log(action)
     

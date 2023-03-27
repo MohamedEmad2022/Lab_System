@@ -1,11 +1,12 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import config from "../../config";
 
 
-export const GetToothType = createAsyncThunk("tooth/GetToothType", async (token, thunkAPI) => {
+export const GetExpenses = createAsyncThunk("expenses/GetExpenses", async (token, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types`, {
+        const response = await fetch(`${config.apiUrl}/expenses`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -28,10 +29,10 @@ export const GetToothType = createAsyncThunk("tooth/GetToothType", async (token,
 })
 
 
-export const AddToothType = createAsyncThunk("tooth/AddToothType", async (obj, thunkAPI) => {
+export const AddExpenses = createAsyncThunk("expenses/AddExpenses", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types`, {
+        const response = await fetch(`${config.apiUrl}/expenses`, {
             method: "POST",
             body: JSON.stringify(obj.values),
             headers: {
@@ -56,10 +57,10 @@ export const AddToothType = createAsyncThunk("tooth/AddToothType", async (obj, t
 })
 
 
-export const UpdateToothType = createAsyncThunk("tooth/UpdateToothType", async (obj, thunkAPI) => {
+export const UpdateExpenses = createAsyncThunk("expensesType/UpdateExpenses", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types/${obj.id}`, {
+        const response = await fetch(`${config.apiUrl}/expenses/${obj.id}`, {
             method: "PUT",
             body: JSON.stringify(obj.values),
             headers: {
@@ -84,10 +85,10 @@ export const UpdateToothType = createAsyncThunk("tooth/UpdateToothType", async (
 })
 
 
-export const DeleteToothType = createAsyncThunk("tooth/DeleteToothType", async (obj, thunkAPI) => {
+export const DeleteExpenses = createAsyncThunk("expensesType/DeleteExpenses", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types/${obj.id}`, {
+        const response = await fetch(`${config.apiUrl}/expenses/${obj.id}`, {
             method: "DELETE",
             headers: {
                 'Accept': "application/json",
@@ -112,104 +113,105 @@ export const DeleteToothType = createAsyncThunk("tooth/DeleteToothType", async (
 
 
 
-export const ToothTypeSlice = createSlice({
-    name: "tooth",
+
+export const ExpensesSlice = createSlice({
+    name: "expenses",
     initialState: {
-        types: null,
+        expenses: null,
         error: null,
         loading: false,
-        fetchTypes: '',
-        addType: '',
-        updateType: '',
-        deleteType: '',
-        selectedType: null
+        fetchExpenses: '',
+        addExpense: '',
+        updateExpense: '',
+        deleteExpense: '',
+        selectedExpense: null
     },
+
     reducers: {
-        selectType: (state, action) => {
-            state.selectedType = action.payload
+        selectExpense: (state, action) => {
+            state.selectedExpense = action.payload
         }
     },
 
     extraReducers: {
-        //GetToothType actions
-        [GetToothType.pending]: (state, action) => {
+        //GetExpenses actions
+        [GetExpenses.pending]: (state, action) => {
             state.loading = true
-            state.fetchTypes = ''
+            state.fetchExpenses = ''
         },
-        [GetToothType.fulfilled]: (state, action) => {
+        [GetExpenses.fulfilled]: (state, action) => {
             state.loading = false
-            state.types = action.payload.data
-            state.fetchTypes = 'fetch'
+            state.expenses = action.payload.data.data
+            state.fetchExpenses = 'fetch'
             
             
             
 
         },
-        [GetToothType.rejected]: (state, action) => {
+        [GetExpenses.rejected]: (state, action) => {
 
             state.loading = false
-            state.fetchTypes = 'fetch failed'
+            state.fetchExpenses = 'fetch failed'
             console.log(action)
         },
 
-        //AddToothType actions
-        [AddToothType.pending]: (state, action) => {
+        //AddExpenses actions
+        [AddExpenses.pending]: (state, action) => {
             state.loading = true
-            state.addType = ''
+            state.addExpense = ''
             state.error = null
         },
-        [AddToothType.fulfilled]: (state, action) => {
-            state.type = action.payload
+        [AddExpenses.fulfilled]: (state, action) => {
             state.loading = false
-            state.addType = 'add'
+            state.addExpense = 'add'
             state.error = null
 
         },
-        [AddToothType.rejected]: (state, action) => {
+        [AddExpenses.rejected]: (state, action) => {
 
             state.loading = false
-            state.addType = 'add failed'
+            state.addExpense = 'add failed'
             state.error = "حدث خطأ"
             console.log(action)
         },
 
-        //UpdateToothType actions
+        //UpdateExpenses actions
 
-        [UpdateToothType.pending]: (state, action) => {
+        [UpdateExpenses.pending]: (state, action) => {
             state.loading = true
-            state.updateType = ''
+            state.updateExpense = ''
             state.error = null
         },
-        [UpdateToothType.fulfilled]: (state, action) => {
+        [UpdateExpenses.fulfilled]: (state, action) => {
            
-            state.updateType = 'update'
+            state.updateExpense = 'update'
             state.loading = false
             state.error = null
 
         },
-        [UpdateToothType.rejected]: (state, action) => {
+        [UpdateExpenses.rejected]: (state, action) => {
 
             state.loading = false
-            state.updateType = 'update failed'
+            state.updateExpense = 'update failed'
             state.error = "حدث خطأ"
             console.log(action)
         },
 
-        //DeleteToothType actions
+        //DeleteExpenses actions
 
-        [DeleteToothType.pending]: (state, action) => {
+        [DeleteExpenses.pending]: (state, action) => {
             state.loading = true
-            state.deleteType = ''
+            state.deleteExpense = ''
             state.error = null
         },
-        [DeleteToothType.fulfilled]: (state, action) => {
+        [DeleteExpenses.fulfilled]: (state, action) => {
            
-            state.deleteType = 'delete'
+            state.deleteExpense = 'delete'
             state.loading = false
             state.error = null
 
         },
-        [DeleteToothType.rejected]: (state, action) => {
+        [DeleteExpenses.rejected]: (state, action) => {
 
             state.loading = false
             state.error = "حدث خطأ"
@@ -219,5 +221,5 @@ export const ToothTypeSlice = createSlice({
 })
 
 
-export default ToothTypeSlice.reducer;
-export const { selectType } = ToothTypeSlice.actions
+export default ExpensesSlice.reducer;
+export const { selectExpense } = ExpensesSlice.actions

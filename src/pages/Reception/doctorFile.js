@@ -85,7 +85,7 @@ const DoctorFile = () => {
   ];
 
 
-  const dataSource = fetchDoctors === "fetch" ? doctors.data.data.map((item) => {
+  const dataSource = fetchDoctors === "fetch" ? doctors.map((item) => {
     return {
       id: item.id,
       name: item.name,

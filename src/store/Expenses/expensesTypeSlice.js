@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import config from "../../config";
 
 
-export const GetToothType = createAsyncThunk("tooth/GetToothType", async (token, thunkAPI) => {
+export const GetExpensesTypes = createAsyncThunk("expensesType/GetExpensesTypes", async (token, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types`, {
+        const response = await fetch(`${config.apiUrl}/expense-types`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -28,10 +28,10 @@ export const GetToothType = createAsyncThunk("tooth/GetToothType", async (token,
 })
 
 
-export const AddToothType = createAsyncThunk("tooth/AddToothType", async (obj, thunkAPI) => {
+export const AddExpensesType = createAsyncThunk("expensesType/AddExpensesType", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types`, {
+        const response = await fetch(`${config.apiUrl}/expense-types`, {
             method: "POST",
             body: JSON.stringify(obj.values),
             headers: {
@@ -56,10 +56,10 @@ export const AddToothType = createAsyncThunk("tooth/AddToothType", async (obj, t
 })
 
 
-export const UpdateToothType = createAsyncThunk("tooth/UpdateToothType", async (obj, thunkAPI) => {
+export const UpdateExpensesType = createAsyncThunk("expensesType/UpdateExpensesType", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types/${obj.id}`, {
+        const response = await fetch(`${config.apiUrl}/expense-types/${obj.id}`, {
             method: "PUT",
             body: JSON.stringify(obj.values),
             headers: {
@@ -84,10 +84,10 @@ export const UpdateToothType = createAsyncThunk("tooth/UpdateToothType", async (
 })
 
 
-export const DeleteToothType = createAsyncThunk("tooth/DeleteToothType", async (obj, thunkAPI) => {
+export const DeleteExpensesType = createAsyncThunk("expensesType/DeleteExpensesType", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/tooth-types/${obj.id}`, {
+        const response = await fetch(`${config.apiUrl}/expense-types/${obj.id}`, {
             method: "DELETE",
             headers: {
                 'Accept': "application/json",
@@ -112,10 +112,11 @@ export const DeleteToothType = createAsyncThunk("tooth/DeleteToothType", async (
 
 
 
-export const ToothTypeSlice = createSlice({
-    name: "tooth",
+
+export const ExpensesTypeSlice = createSlice({
+    name: "expensesType",
     initialState: {
-        types: null,
+        expensesType: null,
         error: null,
         loading: false,
         fetchTypes: '',
@@ -124,6 +125,7 @@ export const ToothTypeSlice = createSlice({
         deleteType: '',
         selectedType: null
     },
+
     reducers: {
         selectType: (state, action) => {
             state.selectedType = action.payload
@@ -131,41 +133,40 @@ export const ToothTypeSlice = createSlice({
     },
 
     extraReducers: {
-        //GetToothType actions
-        [GetToothType.pending]: (state, action) => {
+        //GetExpensesTypes actions
+        [GetExpensesTypes.pending]: (state, action) => {
             state.loading = true
             state.fetchTypes = ''
         },
-        [GetToothType.fulfilled]: (state, action) => {
+        [GetExpensesTypes.fulfilled]: (state, action) => {
             state.loading = false
-            state.types = action.payload.data
+            state.expensesType = action.payload.data
             state.fetchTypes = 'fetch'
             
             
             
 
         },
-        [GetToothType.rejected]: (state, action) => {
+        [GetExpensesTypes.rejected]: (state, action) => {
 
             state.loading = false
             state.fetchTypes = 'fetch failed'
             console.log(action)
         },
 
-        //AddToothType actions
-        [AddToothType.pending]: (state, action) => {
+        //AddExpensesType actions
+        [AddExpensesType.pending]: (state, action) => {
             state.loading = true
             state.addType = ''
             state.error = null
         },
-        [AddToothType.fulfilled]: (state, action) => {
-            state.type = action.payload
+        [AddExpensesType.fulfilled]: (state, action) => {
             state.loading = false
             state.addType = 'add'
             state.error = null
 
         },
-        [AddToothType.rejected]: (state, action) => {
+        [AddExpensesType.rejected]: (state, action) => {
 
             state.loading = false
             state.addType = 'add failed'
@@ -173,21 +174,21 @@ export const ToothTypeSlice = createSlice({
             console.log(action)
         },
 
-        //UpdateToothType actions
+        //UpdateExpensesType actions
 
-        [UpdateToothType.pending]: (state, action) => {
+        [UpdateExpensesType.pending]: (state, action) => {
             state.loading = true
             state.updateType = ''
             state.error = null
         },
-        [UpdateToothType.fulfilled]: (state, action) => {
+        [UpdateExpensesType.fulfilled]: (state, action) => {
            
             state.updateType = 'update'
             state.loading = false
             state.error = null
 
         },
-        [UpdateToothType.rejected]: (state, action) => {
+        [UpdateExpensesType.rejected]: (state, action) => {
 
             state.loading = false
             state.updateType = 'update failed'
@@ -195,21 +196,21 @@ export const ToothTypeSlice = createSlice({
             console.log(action)
         },
 
-        //DeleteToothType actions
+        //DeleteExpensesType actions
 
-        [DeleteToothType.pending]: (state, action) => {
+        [DeleteExpensesType.pending]: (state, action) => {
             state.loading = true
             state.deleteType = ''
             state.error = null
         },
-        [DeleteToothType.fulfilled]: (state, action) => {
+        [DeleteExpensesType.fulfilled]: (state, action) => {
            
             state.deleteType = 'delete'
             state.loading = false
             state.error = null
 
         },
-        [DeleteToothType.rejected]: (state, action) => {
+        [DeleteExpensesType.rejected]: (state, action) => {
 
             state.loading = false
             state.error = "حدث خطأ"
@@ -219,5 +220,5 @@ export const ToothTypeSlice = createSlice({
 })
 
 
-export default ToothTypeSlice.reducer;
-export const { selectType } = ToothTypeSlice.actions
+export default ExpensesTypeSlice.reducer;
+export const { selectType } = ExpensesTypeSlice.actions

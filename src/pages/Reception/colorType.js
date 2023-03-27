@@ -63,7 +63,7 @@ const ColorType = () => {
 
     
 
-    const dataSource = fetchColors === "fetch" ? colors.data.map((item) => {
+    const dataSource = fetchColors === "fetch" ? colors.map((item) => {
         return {
             key: item.id,
             name: item.name,

@@ -13,7 +13,11 @@ const AppRoutes = () => {
   const ToothType = lazy(() => import("../pages/Reception/toothType"))
   const ColorType = lazy(() => import("../pages/Reception/colorType"))
   const DoctorFile = lazy(() => import("../pages/Reception/doctorFile"))
+  const NewPatient = lazy(() => import("../pages/Reception/newPatient"))
+  const AddExpensesType = lazy(() => import("../pages/Expenses/addExpensesType"))
+  const AddExpenses = lazy(() => import("../pages/Expenses/addExpenses"))
   const DashBoard = lazy(() => import("../pages/dashBoard"))
+  const LabData = lazy(() => import("../pages/labData"))
   const NotFound = lazy(() => import("../pages/404"))
 
 
@@ -39,6 +43,10 @@ const AppRoutes = () => {
             <Route path='toothType' element={<ToothType />} />
             <Route path='colorType' element={<ColorType />} />
             <Route path='doctorFile' element={<DoctorFile />} />
+            <Route path='newPatient' element={<NewPatient />} />
+            <Route path='addExpensesType' element={<AddExpensesType />} />
+            <Route path='addExpenses' element={<AddExpenses />} />
+            <Route path='labData' element={<LabData />} />
 
           </Route>
           <Route path='*' element={<NotFound />} />

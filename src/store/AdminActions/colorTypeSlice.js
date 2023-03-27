@@ -138,7 +138,7 @@ export const ColorTypeSlice = createSlice({
         },
         [GetColorsTypes.fulfilled]: (state, action) => {
             state.loading = false
-            state.colors = action.payload
+            state.colors = action.payload.data
             state.fetchColors = 'fetch'
             console.log(action)
             

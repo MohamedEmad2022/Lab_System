@@ -5,58 +5,21 @@ import { faTooth } from '@fortawesome/free-solid-svg-icons';
 
 import { Avatar, Card, Typography } from 'antd'
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 function PatientFile() {
-  const data = [
-    {
-      top: {
-        right:[
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7"
-        ],
-        left:[
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-        ],
-      }
-    }
-  ]
-  const d=["1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",]
-
-  const Fi = ()=>(
-    data.map((item, index) => {
-      item.top.right.map((it, index) => (
-        // <Avatar key={index} icon={<ToolOutlined />} />
-   <p>{it}</p>
-      )
-    )
-  })
-  )
+  
+  
+ 
 
 
   
   return (
     <>
-    <Card>
-      <Typography.Title>PatientFile</Typography.Title>
-      
-      
-    </Card>
-    <div className='tooth-con'>
+    <Link to="/newPatient">أضافة مريض</Link>
+
+
+    {/* <div className='tooth-con'>
     {
       data.map((item, index) => (
         item.top.right.map((it, index) => (
@@ -67,7 +30,7 @@ function PatientFile() {
       ))
     }
     
-    </div>
+    </div> */}
     </>
   )
 }

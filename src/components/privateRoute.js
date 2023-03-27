@@ -36,19 +36,14 @@ const PrivateRoute = () => {
     }
   }
 
-  // if (login) {
-  //     return <Outlet />
-  // } else {
-  //     return "no routes"
-  // }
-
+  
 
   return (
     <>
       {
         login ?
           <Layout className='container'>
-            <Sider theme='light' >
+            <Sider style={{paddingTop: "15px"}} theme='light' >
               <SideBar />
             </Sider>
             <Layout>

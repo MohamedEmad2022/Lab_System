@@ -8,9 +8,7 @@
   transform: rotateY(70deg);
   /* border: 1px solid black; */
 }
-.tooth{
-  width: 100px;
-  height: 200px;
-  border-radius: 4px;
-  border: 1px solid black;;
+.tooth:Hover{
+  color:crimson;
+  cursor: pointer;
 }

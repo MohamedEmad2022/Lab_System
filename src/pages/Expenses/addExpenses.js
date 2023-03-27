@@ -1,32 +1,60 @@
-import { Alert, Button, Card, Col, Divider, Form, Input, InputNumber, Modal, Popconfirm, Row, Table, Typography } from 'antd'
+import { Alert, Button, Col, Form, Input, InputNumber, Modal, Popconfirm, Row, Select, Table, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAuthentication } from '../../components/isAuthentication'
-import { AddToothType, DeleteToothType, GetToothType, selectType, UpdateToothType } from '../../store/AdminActions/toothTypeSlice'
+import { AddExpenses, DeleteExpenses, GetExpenses, selectExpense, UpdateExpenses } from '../../store/Expenses/expensesSlice'
+import { GetExpensesTypes } from '../../store/Expenses/expensesTypeSlice'
 
-const ToothType = () => {
+const ExpensesFile = () => {
 
-    const [form] = Form.useForm()
-    const dispatch = useDispatch()
-    const { types, fetchTypes, updateType, error, addType, deleteType, selectedType, loading } = useSelector(state => state.tooth)
     const [open, setOpen] = useState(false);
     const [edit, setEdit] = useState(false);
+    const [form] = Form.useForm()
+    const dispatch = useDispatch()
+    const { expenses, fetchExpenses, updateExpense, error, addExpense, deleteExpense, selectedExpense, loading } = useSelector(state => state.expenses)
+    const { expensesType } = useSelector(state => state.expensesType)
 
 
 
+
+    const token = isAuthentication().token
 
 
 
 
     useEffect(() => {
-        dispatch(GetToothType(isAuthentication().token))
-    }, [dispatch, updateType, deleteType, addType])
+        dispatch(GetExpenses(token))
+    }, [dispatch, token, updateExpense, deleteExpense, addExpense])
+
+    useEffect(() => {
+        dispatch(GetExpensesTypes(token))
+    }, [dispatch, token])
+
+
+    const SelectComponent = ({ data, onChange }) => {
+
+
+        const options = data?.map((item, index) => {
+            return {
+                label: item.name,
+                value: item.id
+            }
+        })
+
+        return (
+
+
+            <Select options={options} onChange={onChange} />
+
+
+        )
+    }
 
 
 
     const columns = [
         {
-            title: 'الاسم',
+            title: 'بند المصروفات',
             dataIndex: 'name',
             key: 'name',
         },
@@ -36,9 +64,28 @@ const ToothType = () => {
             key: 'cost',
         },
         {
-            title: 'الوصف',
-            dataIndex: 'description',
-            key: 'description',
+            title: 'التاريخ',
+            dataIndex: 'date',
+            key: 'date',
+            render: (_, record) => (
+
+                <>
+                    {
+                        record.updated_at ?
+                            <Typography.Text>{record.updated_at}</Typography.Text>
+                            :
+                            <Typography.Text>{record.created_at}</Typography.Text>
+                    }
+
+                </>
+            )
+
+
+        },
+        {
+            title: 'ملاحظات',
+            dataIndex: 'notes',
+            key: 'notes',
         },
         {
             title: 'العمليات',
@@ -46,9 +93,9 @@ const ToothType = () => {
             key: 'actions',
             render: (_, record) => (
                 <Row gutter={3}>
-                    
+
                     <Col>
-                        <Button type="primary" onClick={()=>editModal(record)}>
+                        <Button type="primary" onClick={() => editModal(record)}>
                             تعديل
                         </Button>
                     </Col>
@@ -56,7 +103,7 @@ const ToothType = () => {
                         <Popconfirm
                             title="حذف نوع"
                             description="هل تريد حذف هذا النوع"
-                            onConfirm={()=>DeleteType(record)}
+                            onConfirm={() => DeleteType(record)}
                             okText="حذف"
                             cancelText="رجوع"
                         >
@@ -71,12 +118,16 @@ const ToothType = () => {
     ];
 
 
-    const dataSource = fetchTypes === "fetch" ? types.map((item) => {
+    const dataSource = fetchExpenses === "fetch" ? expenses.map((item) => {
         return {
+            id: item.id,
             key: item.id,
-            name: item.name,
+            name: item.expense_type.name,
             cost: item.cost,
-            description: item.description,
+            notes: item.notes,
+            created_at: item.created_at,
+            updated_at: item.updated_at
+
         }
     })
         : ""
@@ -85,9 +136,8 @@ const ToothType = () => {
 
     const AddModal = () => {
         form.setFieldsValue({
-            name: "",
             cost: "",
-            description: "",
+            notes: "",
         })
 
         setEdit(false)
@@ -101,11 +151,11 @@ const ToothType = () => {
     const editModal = (record) => {
 
         form.setFieldsValue({
-            name: record.name,
+            expense_type_id: record.name,
             cost: record.cost,
-            description: record.description
+            notes: record.notes
         })
-        dispatch(selectType(record))
+        dispatch(selectExpense(record))
         setEdit(true)
         setOpen(true);
     }
@@ -114,23 +164,26 @@ const ToothType = () => {
 
 
 
-    const AddType = (values) => {
+    const addNewExpense = (values) => {
+
         const obj = {
             values,
-            token: isAuthentication().token
+            token
         }
-        dispatch(AddToothType(obj))
+        console.log(values)
+        dispatch(AddExpenses(obj))
         setOpen(false)
     }
 
-    const UpdatType = (values) => {
+    const UpdatExpense = (values) => {
         const obj = {
             values,
-            token: isAuthentication().token,
-            id: selectedType.key
+            token,
+            id: selectedExpense.id
         }
-        dispatch(UpdateToothType(obj))
+        console.log(values)
 
+        dispatch(UpdateExpenses(obj))
         setOpen(false)
     }
 
@@ -138,13 +191,13 @@ const ToothType = () => {
 
         const obj = {
             id: record.key,
-            token: isAuthentication().token
+            token
         }
-        dispatch(DeleteToothType(obj))
+        dispatch(DeleteExpenses(obj))
     }
 
 
-    
+
 
 
     return (
@@ -162,8 +215,8 @@ const ToothType = () => {
                             اضافة
                         </Button>
                     </Col>
-                    
-                    
+
+
                 </Row>
 
 
@@ -171,7 +224,7 @@ const ToothType = () => {
 
             </>
             <Modal
-                title="ملف مواد التركيبات"
+                title="ملف المصروفات"
                 open={open}
                 onCancel={handleCancel}
 
@@ -185,32 +238,32 @@ const ToothType = () => {
             >
 
 
-                <Form form={form} onFinish={edit ? UpdatType : AddType} dir='rtl' labelCol={{ span: 24 }}
+                <Form form={form} onFinish={edit ? UpdatExpense : addNewExpense} dir='rtl' labelCol={{ span: 24 }}
 
 
                 >
 
                     <Form.Item
-                        name='name'
-                        label="اسم المادة"
+                        name='expense_type_id'
+                        label="بند المصروفات"
 
 
                         rules={[{
                             required: true,
-                            message: 'من فضلك ادخال اسم المادة',
+                            message: 'من فضلك اختار بند المصروفات',
                         },
                         ]
                         }
 
                     >
-                        <Input value={selectedType?.name} placeholder='ادخل اسم المادة' />
+                        <SelectComponent data={expensesType} />
 
                     </Form.Item>
 
 
                     <Form.Item
                         name='cost'
-                        label="التكلفة لكل وحدة"
+                        label="التكلفة"
                         rules={[{
                             required: true,
                             message: 'من فضلك ادخل التكلفة'
@@ -224,12 +277,12 @@ const ToothType = () => {
                     </Form.Item>
 
                     <Form.Item
-                        name='description'
-                        label="وصف المادة"
+                        name='notes'
+                        label="ملاحظات"
 
 
                     >
-                        <Input.TextArea placeholder='ادخل وصف للمادة' />
+                        <Input.TextArea placeholder='ملاحظات' />
 
                     </Form.Item>
 
@@ -251,7 +304,7 @@ const ToothType = () => {
                 loading={loading}
                 columns={columns}
                 dataSource={dataSource}
-                
+
             />
 
 
@@ -260,4 +313,4 @@ const ToothType = () => {
     )
 }
 
-export default ToothType
+export default ExpensesFile
