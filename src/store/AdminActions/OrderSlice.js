@@ -57,30 +57,22 @@ export const GetUnitTypes = createAsyncThunk("order/GetUnitTypes", async (token,
 
 export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
-    console.log(obj.formData)
     try {
-        const response = await axios.post(`${config.apiUrl}/orders-store`,
-        obj.orderData,
-        {
+
+        // for (var pair of obj.formData.entries()) {
+        //     console.log(pair[0] + ', ' + pair[1]);
+        // }
+        const response = await axios({
+            method: 'post',
+            url: `${config.apiUrl}/orders-store`,
+            data: obj.formData,
             headers: {
-                    'Accept': "application/json",
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${obj.token}`
-                }
-            }
-        )
-        // const response = await fetch(`${config.apiUrl}/orders-store`, {
-        //     method: "POST",
-        //     body: obj.orderData,
-        //     headers: {
-        //         'Accept': "application/json",
-        //         'Content-Type': 'multipart/form-data',
-        //         'Authorization': `Bearer ${obj.token}`
-        //     }
+                'Content-Type': `multipart/form-data`,
+                'Authorization': `Bearer ${obj.token}`
+            },
+        });
 
-        // })
-
-        console.log(response.payload)
+        console.log(response.payload);
         if (!response.ok) {
             return rejectWithValue(response.error)
         } else {
@@ -113,7 +105,7 @@ export const OrderSlice = createSlice({
     },
 
     reducers: {
-        toggilSelect: (state, action) => {
+        toggleSelect: (state, action) => {
             if (state.selectedTooths.indexOf(action.payload) === -1) {
 
                 state.selectedTooths.push(action.payload)
@@ -191,4 +183,4 @@ export const OrderSlice = createSlice({
 
 
 export default OrderSlice.reducer;
-export const { toggilSelect } = OrderSlice.actions
+export const { toggleSelect } = OrderSlice.actions

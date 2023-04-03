@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { isAuthentication } from '../../components/isAuthentication'
 import { GetColorsTypes } from '../../store/AdminActions/colorTypeSlice'
 import { GetDoctors } from '../../store/AdminActions/doctorSlice'
-import { AddOrder, GetUnitTypes, toggilSelect } from '../../store/AdminActions/OrderSlice'
+import { AddOrder, GetUnitTypes, toggleSelect } from '../../store/AdminActions/OrderSlice'
 import { GetToothType } from '../../store/AdminActions/toothTypeSlice'
 
 const NewPatient = () => {
@@ -17,7 +17,7 @@ const NewPatient = () => {
     const [doctorId, setDoctorId] = useState("")
     const [colorId, setColorId] = useState("")
     const [toothTypeId, setToothTypeId] = useState("")
-    
+    const [image,setImage] = useState(null);
     const state = useSelector(state => state)
     const {selectedTooths} = useSelector(state => state.order)
 
@@ -25,17 +25,16 @@ const NewPatient = () => {
 
 
     useEffect(() => {
-
         dispatch(GetColorsTypes(token))
         dispatch(GetDoctors(token))
         dispatch(GetToothType(token))
         dispatch(GetUnitTypes(token))
-    }, [dispatch])
+        localStorage.setItem('unit_types',JSON.stringify([]));
+    }, [])
     
 
 
     const SelectComponent = ({ data, handleSelect }) => {
-
 
         const options = data?.map((item, index) => {
             return {
@@ -45,19 +44,14 @@ const NewPatient = () => {
         })
 
         return (
-
-
             <Select options={options} onChange={handleSelect} />
-
-
         )
     }
     let formData = new FormData()
 
-    const handleChange = (name)=> (event) => {
-
-        console.log(event.target)
-        const value = name === "photo" ? event.target.files[0] : event.target.value;
+      const handleChange = (name)=> (event) => {
+        const value = event.target.value;
+        console.log(value);
         formData.append(name, value);
       };
 
@@ -71,31 +65,52 @@ const NewPatient = () => {
 
 
     const Finish = () => {
-
-
         // let orderData = new FormData()
         // orderData.append('patient_name', values.name)
         // orderData.append('doctor_id', values.doctor_id)
         // orderData.append('color_id', values.color_id)
         // orderData.append('delivered', true)
         
+        let unit_types =JSON.parse(localStorage.getItem('unit_types'));
+        unit_types.forEach(element => {
+            formData.append('unit_types_ids[]', element);            
+        });
+        // formData.append('unit_types_ids',JSON.parse(localStorage.getItem('unit_types')));
+        console.log(JSON.parse(localStorage.getItem('unit_types')));
+
+        console.log(image);
+        formData.append('attachment',image);
 
         const obj = {
             formData,
             token
         }
 
-        dispatch(AddOrder(obj))
+        dispatch(AddOrder(obj));
+        localStorage.setItem('unit_types',[]);
+
     }
 
 
     
-    const select = (id)=>{
+    const select = (id) => {
+      //store ids in local storage
+      let unitTypes = JSON.parse(localStorage.getItem('unit_types'));
+      console.log(unitTypes);
+        if(!unitTypes.includes(id)){   
+            console.log('add');       //checking weather array contain the id
+            unitTypes.push(id);               //adding to array because value doesnt exists
+            console.log('arr',unitTypes);
+        }
+        else{
+            console.log('remove');
+            unitTypes.splice(unitTypes.indexOf(id), 1);  //deleting
+        } 
 
-        dispatch(toggilSelect(id +""))
-
-       
-        
+        localStorage.setItem('unit_types',JSON.stringify(unitTypes));
+        console.log('json str',localStorage.getItem('unit_types'));
+        dispatch(toggleSelect(id));
+        console.log('selected tooth',selectedTooths);
 
     }
     
@@ -113,7 +128,7 @@ const NewPatient = () => {
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() =>select(item.id)}
                                  key={index} icon={faTooth} 
-                                style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id + "") !== -1 ? "red" : ""}`}} />
+                                style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
                             ))
                         }
                     </Col>
@@ -124,7 +139,7 @@ const NewPatient = () => {
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() => select(item.id)}
                                  key={index} icon={faTooth} 
-                                style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id + "") !== -1 ? "red" : ""}`}} />
+                                style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
                             ))
                         }
                     </Col>
@@ -138,7 +153,7 @@ const NewPatient = () => {
                                 return unit.level === "LOWER" && unit.direction === "RIGHT"
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() => select(item.id)} key={index} icon={faTooth}
-                                 style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id + "") !== -1 ? "red" : ""}`}} />
+                                 style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
                             ))
                         }
                     </Col>
@@ -148,7 +163,7 @@ const NewPatient = () => {
                                 return unit.level === "LOWER" && unit.direction === "LEFT"
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() => select(item.id)} key={index} icon={faTooth}
-                                 style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id + "") !== -1 ? "red" : ""}`}} />
+                                 style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
                             ))
                         }
                     </Col>
@@ -229,16 +244,19 @@ const NewPatient = () => {
 
                         <Row justify="space-between">
                             <Col span={11}>
-                                <Form.Item
+                                <input
+                                  type="file"
+                                  onChange={(e) => {
+                                    console.log('file input');
+                                    console.log(e.target);
+                                    setImage(e.target.files[0]);
+                                  }
+                                 }
                                     name='attachment'
                                     label="ملف"
-                                >
-                                    <Upload>
-                                        <Button>
-                                            تحميل
-                                        </Button>
-                                    </Upload>
-                                </Form.Item>
+                                />
+                                    
+                                
                             </Col>
                             <Col span={11}>
                                 <Units />
