@@ -36,17 +36,17 @@ const PrivateRoute = () => {
     }
   }
 
-  
+
 
   return (
     <>
       {
         login ?
-          <Layout className='container'>
-            <Sider style={{paddingTop: "15px"}} theme='light' >
+          <Layout className='' style={{height: "auto"}}>
+            <Sider style={{ paddingTop: "15px" }} theme='light' >
               <SideBar />
             </Sider>
-            <Layout>
+            <Layout >
               <Header>
                 <Row justify='space-between'>
                   <Col>
@@ -59,16 +59,25 @@ const PrivateRoute = () => {
 
 
               </Header>
-              <Content>
-                <Row justify='center'>
-                  <Col span={22} style={{ paddingTop: '20px' }}>
-                    <Outlet />
-                  </Col>
-                </Row>
+              <Row justify='center'>
+                <Col span={23}>
+                  <Content>
+                    <Row >
+                      <Col span={24} style={{ paddingTop: '20px' }}>
+                        <Outlet />
+                      </Col>
+                    </Row>
 
-              </Content>
+                  </Content>
+                </Col>
+              </Row>
 
-              <Footer>Footer</Footer>
+
+              <Row>
+                <Col>
+                  <Footer>Footer</Footer>
+                </Col>
+              </Row>
             </Layout>
 
           </Layout>

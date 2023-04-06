@@ -1,14 +1,17 @@
 .container {
   width: 100vw;
-  height: 100vh;
+  
 }
 
 .tooth-con{
   display: flex;
   transform: rotateY(70deg);
-  /* border: 1px solid black; */
 }
 .tooth:Hover{
   color:crimson;
   cursor: pointer;
+  
+}
+.disabled{
+  pointer-events: none;
 }

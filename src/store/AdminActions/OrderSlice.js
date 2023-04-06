@@ -4,10 +4,10 @@ import config from "../../config";
 
 
 
-export const GetOrders = createAsyncThunk("order/GetOrders", async (token, thunkAPI) => {
+export const GetOrders = createAsyncThunk("order/GetOrders", async ({token, page}, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/orders`, {
+        const response = await fetch(`${config.apiUrl}/orders?page=${page}`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -59,9 +59,6 @@ export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI)
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
 
-        // for (var pair of obj.formData.entries()) {
-        //     console.log(pair[0] + ', ' + pair[1]);
-        // }
         const response = await axios({
             method: 'post',
             url: `${config.apiUrl}/orders-store`,
@@ -72,7 +69,7 @@ export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI)
             },
         });
 
-        console.log(response.payload);
+        
         if (!response.ok) {
             return rejectWithValue(response.error)
         } else {
@@ -85,6 +82,33 @@ export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI)
     }
 })
 
+
+export const UpdateOrder = createAsyncThunk("order/UpdateOrder", async (obj, thunkAPI) => {
+    const { rejectWithValue, fulfillWithValue } = thunkAPI
+    try {
+
+        const response = await axios({
+            method: 'PUT',
+            url: `${config.apiUrl}/orders-store`,
+            data: obj.formData,
+            headers: {
+                'Content-Type': `multipart/form-data`,
+                'Authorization': `Bearer ${obj.token}`
+            },
+        });
+
+        
+        if (!response.ok) {
+            return rejectWithValue(response.error)
+        } else {
+            return fulfillWithValue(response)
+        }
+
+
+    } catch (error) {
+        throw rejectWithValue(error.message)
+    }
+})
 
 
 
@@ -101,6 +125,7 @@ export const OrderSlice = createSlice({
         addOrder: '',
         updateOrder: '',
         deleteOrder: '',
+        totalOrders: ""
 
     },
 
@@ -125,9 +150,10 @@ export const OrderSlice = createSlice({
         [GetOrders.fulfilled]: (state, action) => {
             state.loading = false
             state.orders = action.payload.data
+            state.totalOrders = action.payload.data.total
             state.fetchOrders = 'fetch'
 
-
+            console.log(action)
 
 
         },
@@ -175,6 +201,27 @@ export const OrderSlice = createSlice({
 
             state.loading = false
             state.addOrder = 'add failed'
+            state.error = "حدث خطأ"
+            console.log(action)
+        },
+
+
+         //UpdateOrder actions
+         [UpdateOrder.pending]: (state, action) => {
+            state.loading = true
+            state.updateOrder = ''
+            state.error = null
+        },
+        [UpdateOrder.fulfilled]: (state, action) => {
+            state.loading = false
+            state.updateOrder = 'update'
+            state.error = null
+
+        },
+        [UpdateOrder.rejected]: (state, action) => {
+
+            state.loading = false
+            state.updateOrder = 'update failed'
             state.error = "حدث خطأ"
             console.log(action)
         },

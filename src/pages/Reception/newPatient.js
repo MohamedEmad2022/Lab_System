@@ -14,12 +14,9 @@ const NewPatient = () => {
 
     const [form] = Form.useForm()
     const dispatch = useDispatch()
-    const [doctorId, setDoctorId] = useState("")
-    const [colorId, setColorId] = useState("")
-    const [toothTypeId, setToothTypeId] = useState("")
-    const [image,setImage] = useState(null);
+    const [image, setImage] = useState(null);
     const state = useSelector(state => state)
-    const {selectedTooths} = useSelector(state => state.order)
+    const { selectedTooths } = useSelector(state => state.order)
 
     const token = isAuthentication().token
 
@@ -29,9 +26,8 @@ const NewPatient = () => {
         dispatch(GetDoctors(token))
         dispatch(GetToothType(token))
         dispatch(GetUnitTypes(token))
-        localStorage.setItem('unit_types',JSON.stringify([]));
     }, [])
-    
+
 
 
     const SelectComponent = ({ data, handleSelect }) => {
@@ -49,37 +45,31 @@ const NewPatient = () => {
     }
     let formData = new FormData()
 
-      const handleChange = (name)=> (event) => {
+    const handleChange = (name) => (event) => {
         const value = event.target.value;
-        console.log(value);
         formData.append(name, value);
-      };
+    };
 
-      const handleSelect = (name)=> (event) => {
+    const handleSelect = (name) => (event) => {
 
-        console.log(event)
-        const value = name === "photo" ? event.target.files[0] : event;
+        const value = name === "attachment" ? event.fileList[0] : event;
         formData.append(name, value);
-        
-      };
+
+    };
 
 
     const Finish = () => {
-        // let orderData = new FormData()
-        // orderData.append('patient_name', values.name)
-        // orderData.append('doctor_id', values.doctor_id)
-        // orderData.append('color_id', values.color_id)
-        // orderData.append('delivered', true)
+    
         
-        let unit_types =JSON.parse(localStorage.getItem('unit_types'));
-        unit_types.forEach(element => {
+
+        
+        selectedTooths.forEach(element => {
             formData.append('unit_types_ids[]', element);            
         });
-        // formData.append('unit_types_ids',JSON.parse(localStorage.getItem('unit_types')));
-        console.log(JSON.parse(localStorage.getItem('unit_types')));
+        // // formData.append('unit_types_ids',JSON.parse(localStorage.getItem('unit_types')));
+        // console.log(JSON.parse(localStorage.getItem('unit_types')));
 
-        console.log(image);
-        formData.append('attachment',image);
+        // console.log(image);
 
         const obj = {
             formData,
@@ -87,35 +77,21 @@ const NewPatient = () => {
         }
 
         dispatch(AddOrder(obj));
-        localStorage.setItem('unit_types',[]);
 
     }
 
 
-    
+
     const select = (id) => {
-      //store ids in local storage
-      let unitTypes = JSON.parse(localStorage.getItem('unit_types'));
-      console.log(unitTypes);
-        if(!unitTypes.includes(id)){   
-            console.log('add');       //checking weather array contain the id
-            unitTypes.push(id);               //adding to array because value doesnt exists
-            console.log('arr',unitTypes);
-        }
-        else{
-            console.log('remove');
-            unitTypes.splice(unitTypes.indexOf(id), 1);  //deleting
-        } 
-
-        localStorage.setItem('unit_types',JSON.stringify(unitTypes));
-        console.log('json str',localStorage.getItem('unit_types'));
+        
         dispatch(toggleSelect(id));
-        console.log('selected tooth',selectedTooths);
-
+        
+console.log(selectedTooths)
     }
-    
 
     const Units = () => {
+
+        document.querySelectorAll(".tooth").forEach(element => element.classList.add('disabled'))
 
         return (
             <>
@@ -126,9 +102,9 @@ const NewPatient = () => {
                             state.order.unitTypes?.filter((unit, index) => {
                                 return unit.level === "UPPER" && unit.direction === "RIGHT"
                             }).map((item, index) => (
-                                <FontAwesomeIcon className='tooth' onClick={() =>select(item.id)}
-                                 key={index} icon={faTooth} 
-                                style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
+                                <FontAwesomeIcon className='tooth' onClick={() => select(item.id)}
+                                    key={index} icon={faTooth}
+                                    style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}` }} />
                             ))
                         }
                     </Col>
@@ -138,14 +114,14 @@ const NewPatient = () => {
                                 return unit.level === "UPPER" && unit.direction === "LEFT"
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() => select(item.id)}
-                                 key={index} icon={faTooth} 
-                                style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
+                                    key={index} icon={faTooth}
+                                    style={{ fontSize: `${40 - index * 3}px`, transform: "rotateX(180deg)", color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}` }} />
                             ))
                         }
                     </Col>
 
                 </Row>
-                <Row style={{marginBottom: "50px"}}>
+                <Row style={{ marginBottom: "50px" }}>
 
                     <Col style={{ transform: "rotateY(180deg)" }} span={12}>
                         {
@@ -153,7 +129,7 @@ const NewPatient = () => {
                                 return unit.level === "LOWER" && unit.direction === "RIGHT"
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() => select(item.id)} key={index} icon={faTooth}
-                                 style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
+                                    style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}` }} />
                             ))
                         }
                     </Col>
@@ -163,7 +139,7 @@ const NewPatient = () => {
                                 return unit.level === "LOWER" && unit.direction === "LEFT"
                             }).map((item, index) => (
                                 <FontAwesomeIcon className='tooth' onClick={() => select(item.id)} key={index} icon={faTooth}
-                                 style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}`}} />
+                                    style={{ fontSize: `${40 - index * 3}px`, color: `${selectedTooths.indexOf(item.id) !== -1 ? "red" : ""}` }} />
                             ))
                         }
                     </Col>
@@ -172,6 +148,8 @@ const NewPatient = () => {
 
             </>
         )
+
+        
     }
 
 
@@ -181,8 +159,8 @@ const NewPatient = () => {
             <Row justify="center">
                 <Col span={20}>
 
-                    <Form form={form} onFinish={Finish}   dir='rtl'
-
+                    <Form form={form} onFinish={Finish} dir='rtl'
+                    
 
                     >
                         <Row justify="space-between">
@@ -246,20 +224,19 @@ const NewPatient = () => {
                             <Col span={11}>
                                 <input
                                   type="file"
-                                  onChange={(e) => {
-                                    console.log('file input');
-                                    console.log(e.target);
-                                    setImage(e.target.files[0]);
-                                  }
+                                  onChange={
+                                    handleSelect("attachment")
+                                    // console.log(e.target);
+                                    // setImage(e.target.files[0]);
+                                  
                                  }
                                     name='attachment'
                                     label="ملف"
                                 />
-                                    
                                 
                             </Col>
                             <Col span={11}>
-                                <Units />
+                                <Units/>
                             </Col>
                         </Row>
 
@@ -269,10 +246,10 @@ const NewPatient = () => {
                                     name='delivered'
                                     label="delivered"
                                 >
-                                    
+
                                 </Form.Item>
                             </Col>
-                            
+
                         </Row>
 
 
