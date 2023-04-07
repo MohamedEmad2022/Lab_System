@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTooth } from '@fortawesome/free-solid-svg-icons';
-import { Button, Col, Form, Input, Row, Select } from 'antd'
+import { Alert, Button, Col, Form, Input, Row, Select } from 'antd'
 import Upload from 'antd/es/upload/Upload'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +16,7 @@ const NewPatient = () => {
     const dispatch = useDispatch()
     const [image, setImage] = useState(null);
     const state = useSelector(state => state)
-    const { selectedTooths } = useSelector(state => state.order)
+    const { selectedTooths, error } = useSelector(state => state.order)
 
     const token = isAuthentication().token
 
@@ -156,6 +156,12 @@ console.log(selectedTooths)
 
     return (
         <>
+        {
+              error ?
+                  <Alert message={error} type="error" showIcon closable />
+                  : null
+
+          }
             <Row justify="center">
                 <Col span={20}>
 

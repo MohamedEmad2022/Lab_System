@@ -14,6 +14,7 @@ const AppRoutes = () => {
   const ColorType = lazy(() => import("../pages/Reception/colorType"))
   const DoctorFile = lazy(() => import("../pages/Reception/doctorFile"))
   const NewPatient = lazy(() => import("../pages/Reception/newPatient"))
+  const OrderUpdate = lazy(() => import("../pages/Reception/updateOrder"))
   const AddExpensesType = lazy(() => import("../pages/Expenses/addExpensesType"))
   const AddExpenses = lazy(() => import("../pages/Expenses/addExpenses"))
   const DashBoard = lazy(() => import("../pages/dashBoard"))
@@ -44,6 +45,7 @@ const AppRoutes = () => {
             <Route path='colorType' element={<ColorType />} />
             <Route path='doctorFile' element={<DoctorFile />} />
             <Route path='newPatient' element={<NewPatient />} />
+            <Route path='updateOrder/:id' element={<OrderUpdate />} />
             <Route path='addExpensesType' element={<AddExpensesType />} />
             <Route path='addExpenses' element={<AddExpenses />} />
             <Route path='labData' element={<LabData />} />

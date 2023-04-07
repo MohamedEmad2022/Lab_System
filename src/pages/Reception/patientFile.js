@@ -1,11 +1,11 @@
 import { PlusCircleTwoTone  } from '@ant-design/icons';
 
-import { Alert, Avatar, Button, Card, Col, Form, Input, Modal, Popconfirm, Row, Table, Typography } from 'antd'
+import { Alert, Avatar, Button, Card, Col, Form, Input, Modal, Popconfirm, Row, Table, Tag, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { isAuthentication } from '../../components/isAuthentication';
-import { GetOrders } from '../../store/AdminActions/OrderSlice';
+import { DeleteOrder, GetOrders } from '../../store/AdminActions/OrderSlice';
 
 function PatientFile() {
   
@@ -73,19 +73,31 @@ const token = isAuthentication().token
         title: "حالة الدفع",
         dataIndex: 'payment_status',
         key: 'payment_status',
+        render: (_, record)=>(
+            <Tag color={record?.payment_status === 'PAID' ? 'green' : 'red'}>{record?.payment_status}</Tag>
+        )
     },
     {
         title: "التوصيل",
         dataIndex: 'delivered',
         key: 'delivered',
+        render: (_, record)=>(
+            record.delivered ? "تم التوصيل" : "لم يتم التوصيل"
+        )
     },
     {
         title: "تاريخ التسجيل",
         dataIndex: 'created_at',
         key: 'created_at',
+        render: (_, record)=>{
+            const ds = new Date(record?.created_at).toDateString()
+
+            return <>{ds}</>
+        }
+       
     },
       {
-          title: 'الوحدات',
+          title: 'عدد الوحدات',
           dataIndex: 'units',
           key: 'units',
       },
@@ -98,15 +110,15 @@ const token = isAuthentication().token
               <Row gutter={3}>
                   
                   <Col>
-                      <Button type="primary" onClick={()=>editModal(record)}>
-                          تعديل
-                      </Button>
+                      <Link type='primary' to={`/updateOrder/${record.id}`} >
+                          عرض | تعديل
+                      </Link>
                   </Col>
                   <Col>
                       <Popconfirm
                           title="حذف نوع"
                           description="هل تريد حذف هذا النوع"
-                          onConfirm=""
+                          onConfirm={()=>{dispatch(DeleteOrder({id: record?.id, token}))}}
                           okText="حذف"
                           cancelText="رجوع"
                       >
@@ -124,6 +136,7 @@ const token = isAuthentication().token
   const dataSource = fetchOrders === "fetch" ? orders?.data.map((item) => {
       return {
           key: item.id,
+          id: item.id,
           attachment: item?.attachment,
           patient_name: item?.patient_name,
           doctor_name: item.doctor.name,
@@ -143,18 +156,28 @@ const token = isAuthentication().token
 
 
 
- 
   
 
   const handleCancel = () => {
       setOpen(false);
   };
 
-  const editModal = (record) => {
+  const editOrder = (record) => {
 
       form.setFieldsValue({
-          name: record.name,
-          cost: record.units,
+        key: record.id,
+        attachment: record?.attachment,
+        patient_name: record?.patient_name,
+        doctor_name: record.doctor.name,
+        color: record.color.name,
+        tooth_type: record.tooth_type.name,
+        total_amount: record.invoice?.total_amount,
+        paid_amount: record.invoice?.paid_amount,
+        remaining_amount: record.invoice?.remaining_amount,
+        payment_status: record.invoice?.payment_status,
+        delivered: record.delivered,
+        created_at: record.created_at,
+        units: record.units.length,
       })
       
       setEdit(true)
@@ -185,11 +208,15 @@ const token = isAuthentication().token
   // }
 
 
-  
-
 
   return (
       <>
+      {
+              deleteOrder ?
+                  <Alert message={deleteOrder} type="success" showIcon closable />
+                  : null
+
+          }
           {
               error ?
                   <Alert message={error} type="error" showIcon closable />

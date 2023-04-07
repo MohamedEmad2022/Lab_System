@@ -15,3 +15,12 @@
 .disabled{
   pointer-events: none;
 }
+
+.margin{
+  margin: 10px;
+}
+
+.footer{
+  position: absolute;;
+  bottom: 0;
+}

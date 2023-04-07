@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import register from "./Auth/registerSlice"
 import login from "./Auth//loginSlice"
+import logout from "./Auth/logOutSlice"
 import theme from "./Theme//themeSlice"
 import tooth from "./AdminActions/toothTypeSlice"
 import color from "./AdminActions/colorTypeSlice"
@@ -16,6 +17,7 @@ export default configureStore({
     reducer: {
         register,
         login,
+        logout,
         theme,
         tooth,
         color,

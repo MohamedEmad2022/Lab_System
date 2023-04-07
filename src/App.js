@@ -30,6 +30,10 @@ function App() {
     token: {
 
       colorBgBase: '#001529',
+      colorPrimaryBg: '#001529',
+      colorFill: '#001529',
+      colorBgElevated: '#001529',
+      colorBgContainer: '#001529',
       colorText: 'white',
       colorTextQuaternary: '#aeb0af',
       controlOutlineWidth: "0",
@@ -60,6 +64,7 @@ function App() {
       <Routes>
         <Route path='/register' element={<Register />} />
         <Route path='/' element={<LogIn />} />
+        <Route path='*' element={<LogIn />} />
 
       </Routes>
           }

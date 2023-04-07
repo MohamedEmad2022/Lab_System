@@ -42,11 +42,11 @@ const PrivateRoute = () => {
     <>
       {
         login ?
-          <Layout className='' style={{height: "auto"}}>
+          <Layout className='' style={{height: "auto", minHeight: "100Vh"}}>
             <Sider style={{ paddingTop: "15px" }} theme='light' >
               <SideBar />
             </Sider>
-            <Layout >
+            <Layout>
               <Header>
                 <Row justify='space-between'>
                   <Col>
@@ -61,7 +61,7 @@ const PrivateRoute = () => {
               </Header>
               <Row justify='center'>
                 <Col span={23}>
-                  <Content>
+                  <Content style={{height: "auto", minHeight: "80Vh"}}>
                     <Row >
                       <Col span={24} style={{ paddingTop: '20px' }}>
                         <Outlet />
@@ -73,9 +73,9 @@ const PrivateRoute = () => {
               </Row>
 
 
-              <Row>
+              <Row >
                 <Col>
-                  <Footer>Footer</Footer>
+                  <Footer >Footer</Footer>
                 </Col>
               </Row>
             </Layout>
