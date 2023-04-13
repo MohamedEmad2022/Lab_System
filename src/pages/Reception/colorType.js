@@ -1,3 +1,4 @@
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import { Alert, Button, Col, Form, Input, Modal, Popconfirm, Row, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,7 +39,7 @@ const ColorType = () => {
                 <Row gutter={3}>
                     
                     <Col>
-                        <Button type="primary" onClick={()=>editModal(record)}>
+                        <Button icon={<EditOutlined/>} type="primary" onClick={()=>editModal(record)}>
                             تعديل
                         </Button>
                     </Col>
@@ -50,7 +51,7 @@ const ColorType = () => {
                             okText="حذف"
                             cancelText="رجوع"
                         >
-                            <Button type="primary" danger >
+                            <Button icon={<DeleteOutlined/>} type="primary" danger >
                                 حذف
                             </Button>
                         </Popconfirm>
@@ -148,7 +149,7 @@ const ColorType = () => {
             <>
                 <Row gutter={16} style={{paddingBottom: "20px", paddingTop: "20px"}}>
                     <Col>
-                        <Button type="primary" onClick={AddModal}>
+                        <Button icon={<PlusCircleOutlined/>} type="primary" onClick={AddModal}>
                             اضافة
                         </Button>
                     </Col>

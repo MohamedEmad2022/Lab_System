@@ -56,7 +56,7 @@ const SideBar = () => {
           },
           {
             key: 'ui',
-            label: <Link to={'/addExpenses'}>اضافة مصروفات</Link>
+            label: <Link to={'/addExpenses'}>ملف المصروفات</Link>
           },
           
         ]

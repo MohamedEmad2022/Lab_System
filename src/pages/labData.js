@@ -1,3 +1,4 @@
+import { EditOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Modal, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,7 +60,7 @@ const LabData = () => {
     <Typography.Paragraph>رقم واتس المعمل : {settings?.whatsapp}</Typography.Paragraph>
     <Typography.Paragraph>وصف المعمل : {settings?.notes}</Typography.Paragraph>
 
-    <Button onClick={editModal} >تعديل</Button>
+    <Button icon={<EditOutlined/>} onClick={editModal} >تعديل</Button>
 
 
     <Modal
@@ -131,7 +132,7 @@ const LabData = () => {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button block type="primary" htmlType="submit" loading={loading}>
+                        <Button  block type="primary" htmlType="submit" loading={loading}>
                         تعديل
                         </Button>
                     </Form.Item>

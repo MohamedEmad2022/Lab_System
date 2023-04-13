@@ -3,10 +3,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import config from "../../config";
 
 
-export const GetExpenses = createAsyncThunk("expenses/GetExpenses", async (token, thunkAPI) => {
+export const GetExpenses = createAsyncThunk("expenses/GetExpenses", async ({page, token}, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/expenses`, {
+        const response = await fetch(`${config.apiUrl}/expenses?page=${page}`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -71,6 +71,9 @@ export const UpdateExpenses = createAsyncThunk("expensesType/UpdateExpenses", as
 
         })
 
+
+        console.log(response)
+
         const data = await response.json();
         if (!response.ok) {
             return rejectWithValue(data.error)
@@ -121,6 +124,7 @@ export const ExpensesSlice = createSlice({
         error: null,
         loading: false,
         fetchExpenses: '',
+        totalExpenses: "",
         addExpense: '',
         updateExpense: '',
         deleteExpense: '',
@@ -141,7 +145,8 @@ export const ExpensesSlice = createSlice({
         },
         [GetExpenses.fulfilled]: (state, action) => {
             state.loading = false
-            state.expenses = action.payload.data.data
+            state.expenses = action.payload.data
+            state.totalExpenses = action.payload.data.total
             state.fetchExpenses = 'fetch'
             
             

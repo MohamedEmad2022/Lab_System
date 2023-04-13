@@ -1,4 +1,5 @@
 import { Alert, Button, Col, Form, Input, InputNumber, Modal, Popconfirm, Row, Select, Table, Typography } from 'antd'
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAuthentication } from '../../components/isAuthentication'
@@ -11,7 +12,7 @@ const ExpensesFile = () => {
     const [edit, setEdit] = useState(false);
     const [form] = Form.useForm()
     const dispatch = useDispatch()
-    const { expenses, fetchExpenses, updateExpense, error, addExpense, deleteExpense, selectedExpense, loading } = useSelector(state => state.expenses)
+    const { expenses, fetchExpenses, totalExpenses, updateExpense, error, addExpense, deleteExpense, selectedExpense, loading } = useSelector(state => state.expenses)
     const { expensesType } = useSelector(state => state.expensesType)
 
 
@@ -23,7 +24,7 @@ const ExpensesFile = () => {
 
 
     useEffect(() => {
-        dispatch(GetExpenses(token))
+        dispatch(GetExpenses({page: 1, token}))
     }, [dispatch, token, updateExpense, deleteExpense, addExpense])
 
     useEffect(() => {
@@ -31,7 +32,7 @@ const ExpensesFile = () => {
     }, [dispatch, token])
 
 
-    const SelectComponent = ({ data, onChange }) => {
+    const SelectComponent = ({ data, onChange, defaultValue }) => {
 
 
         const options = data?.map((item, index) => {
@@ -44,7 +45,7 @@ const ExpensesFile = () => {
         return (
 
 
-            <Select options={options} onChange={onChange} />
+            <Select options={options} defaultValue={defaultValue} onChange={onChange} />
 
 
         )
@@ -95,7 +96,7 @@ const ExpensesFile = () => {
                 <Row gutter={3}>
 
                     <Col>
-                        <Button type="primary" onClick={() => editModal(record)}>
+                        <Button icon={<EditOutlined/>} type="primary" onClick={() => editModal(record)}>
                             تعديل
                         </Button>
                     </Col>
@@ -107,7 +108,7 @@ const ExpensesFile = () => {
                             okText="حذف"
                             cancelText="رجوع"
                         >
-                            <Button type="primary" danger >
+                            <Button icon={<DeleteOutlined/>} type="primary" danger >
                                 حذف
                             </Button>
                         </Popconfirm>
@@ -118,7 +119,7 @@ const ExpensesFile = () => {
     ];
 
 
-    const dataSource = fetchExpenses === "fetch" ? expenses.map((item) => {
+    const dataSource = fetchExpenses === "fetch" ? expenses?.data.map((item) => {
         return {
             id: item.id,
             key: item.id,
@@ -126,7 +127,8 @@ const ExpensesFile = () => {
             cost: item.cost,
             notes: item.notes,
             created_at: item.created_at,
-            updated_at: item.updated_at
+            updated_at: item.updated_at,
+            expense_type_id: item.expense_type.id
 
         }
     })
@@ -136,12 +138,14 @@ const ExpensesFile = () => {
 
     const AddModal = () => {
         form.setFieldsValue({
+            expense_type_id: "",
             cost: "",
             notes: "",
         })
 
         setEdit(false)
         setOpen(true);
+        dispatch(selectExpense(''))
     };
 
     const handleCancel = () => {
@@ -151,7 +155,7 @@ const ExpensesFile = () => {
     const editModal = (record) => {
 
         form.setFieldsValue({
-            expense_type_id: record.name,
+            expense_type_id: record.id,
             cost: record.cost,
             notes: record.notes
         })
@@ -211,7 +215,7 @@ const ExpensesFile = () => {
             <>
                 <Row gutter={16} style={{ paddingBottom: "20px", paddingTop: "20px" }}>
                     <Col>
-                        <Button type="primary" onClick={AddModal}>
+                        <Button icon={<PlusCircleOutlined/>} type="primary" onClick={AddModal}>
                             اضافة
                         </Button>
                     </Col>
@@ -256,7 +260,7 @@ const ExpensesFile = () => {
                         }
 
                     >
-                        <SelectComponent data={expensesType} />
+                        <SelectComponent data={expensesType} defaultValue={selectedExpense?.expense_type_id} />
 
                     </Form.Item>
 
@@ -304,6 +308,14 @@ const ExpensesFile = () => {
                 loading={loading}
                 columns={columns}
                 dataSource={dataSource}
+                pagination={{
+
+                    total: totalExpenses,
+                    onChange: (page) => {
+
+                        dispatch(GetExpenses({ token, page }))
+                    }
+                }}
 
             />
 

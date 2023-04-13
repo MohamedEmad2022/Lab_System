@@ -1,5 +1,6 @@
 import { Alert, Button, Col, Form, Input, InputNumber, Modal, Popconfirm, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react'
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { isAuthentication } from '../../components/isAuthentication';
 import { AddExpensesType, DeleteExpensesType, GetExpensesTypes, selectType, UpdateExpensesType } from '../../store/Expenses/expensesTypeSlice';
@@ -42,7 +43,7 @@ const token = isAuthentication().token
                 <Row gutter={3}>
                     
                     <Col>
-                        <Button type="primary" onClick={()=>editModal(record)}>
+                        <Button icon={<EditOutlined/>} type="primary" onClick={()=>editModal(record)}>
                             تعديل
                         </Button>
                     </Col>
@@ -54,7 +55,7 @@ const token = isAuthentication().token
                             okText="حذف"
                             cancelText="رجوع"
                         >
-                            <Button type="primary" danger >
+                            <Button icon={<DeleteOutlined/>} type="primary" danger >
                                 حذف
                             </Button>
                         </Popconfirm>
@@ -149,7 +150,7 @@ const token = isAuthentication().token
             <>
                 <Row gutter={16} style={{ paddingBottom: "20px", paddingTop: "20px" }}>
                     <Col>
-                        <Button type="primary" onClick={AddModal}>
+                        <Button icon={<PlusCircleOutlined/>} type="primary" onClick={AddModal}>
                             اضافة
                         </Button>
                     </Col>

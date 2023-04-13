@@ -270,6 +270,50 @@ export const MarkAsDelivered = createAsyncThunk("order/MarkAsDelivered", async (
     }
 })
 
+export const SearchOrders = createAsyncThunk("order/SearchOrders", async ({values, token}, thunkAPI) => {
+    const { rejectWithValue, fulfillWithValue } = thunkAPI
+
+    const name = values.name || ""
+    const status = values.payment_status || ""
+    const color_id = values.color_id || ""
+    const doctor_id = values.doctor_id || ""
+    const tooth_type_id = values.tooth_type_id || ""
+    const date = values.date || ""
+    const date_from = values.date_from || ""
+    const date_to = values.date_to || ""
+    const delivered = values.delivered || ""
+    
+    
+
+    try {
+
+        const response = await axios({
+            method: 'get',
+            url: `${config.apiUrl}/orders?patient_name=${name}&payment_status=${status}&color_id=${color_id}&doctor_id=${doctor_id}
+            &tooth_type_id=${tooth_type_id}&date=${date}&date_from=${date_from}&date_to=${date_to}&delivered=${delivered}`,
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        console.log(response)
+        
+        if (response.status === 200) {
+            return fulfillWithValue(response.data)
+        } else {
+            return rejectWithValue(response)
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        throw rejectWithValue(error.response.data.message)
+        
+    }
+})
+
 
 
 export const OrderSlice = createSlice({
@@ -307,11 +351,13 @@ export const OrderSlice = createSlice({
         [GetOrders.pending]: (state, action) => {
             state.loading = true
             state.fetchOrders = ''
+            state.selectedTooths = []
         },
         [GetOrders.fulfilled]: (state, action) => {
             state.loading = false
             state.orders = action.payload.data
             state.totalOrders = action.payload.data.total
+            state.selectedTooths = []
             state.fetchOrders = 'fetch'
 
             console.log(action)
@@ -325,10 +371,35 @@ export const OrderSlice = createSlice({
             console.log(action)
         },
 
+        //SearchOrders actions
+        [SearchOrders.pending]: (state, action) => {
+            state.loading = true
+            state.fetchOrders = ''
+            state.selectedTooths = []
+        },
+        [SearchOrders.fulfilled]: (state, action) => {
+            state.loading = false
+            state.orders = action.payload.data
+            state.totalOrders = action.payload.data.total
+            state.selectedTooths = []
+            state.fetchOrders = 'fetch'
+
+            console.log(action)
+
+
+        },
+        [SearchOrders.rejected]: (state, action) => {
+
+            state.loading = false
+            state.fetchOrders = 'fetch failed'
+            console.log(action)
+        },
+
         //GetSingleOrder actions
         [GetSingleOrder.pending]: (state, action) => {
             state.loading = true
             state.fetchOrders = ''
+            state.selectedTooths = []
         },
         [GetSingleOrder.fulfilled]: (state, action) => {
             state.loading = false
@@ -346,6 +417,7 @@ export const OrderSlice = createSlice({
 
             state.loading = false
             state.fetchOrders = 'fetch failed'
+            state.selectedTooths = []
             console.log(action)
         },
 
@@ -354,15 +426,12 @@ export const OrderSlice = createSlice({
 
         [GetUnitTypes.pending]: (state, action) => {
             state.loading = true
-
+            state.selectedTooths = []
         },
         [GetUnitTypes.fulfilled]: (state, action) => {
             state.loading = false
+            state.selectedTooths = []
             state.unitTypes = action.payload.data
-
-
-
-
 
         },
         [GetUnitTypes.rejected]: (state, action) => {

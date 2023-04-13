@@ -23,6 +23,7 @@ function App() {
     token: {
 
       colorBgBase: '#fff',
+      colorTextQuaternary: '#828181',
       
     }
   }
@@ -31,14 +32,9 @@ function App() {
 
       colorBgBase: '#001529',
       colorPrimaryBg: '#001529',
-      colorFill: '#001529',
-      colorBgElevated: '#001529',
-      colorBgContainer: '#001529',
       colorText: 'white',
       colorTextQuaternary: '#aeb0af',
       controlOutlineWidth: "0",
-      colorPrimaryBg: "#010252",
-      colorPrimaryBgHover: "black",
       colorErrorBg: "#ff4d4f"
     }
   }

@@ -1,4 +1,5 @@
 import { Alert, Button, Card, Col, Divider, Form, Input, InputNumber, Modal, Popconfirm, Row, Table, Typography } from 'antd'
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAuthentication } from '../../components/isAuthentication'
@@ -48,7 +49,7 @@ const ToothType = () => {
                 <Row gutter={3}>
                     
                     <Col>
-                        <Button type="primary" onClick={()=>editModal(record)}>
+                        <Button icon={<EditOutlined/>} type="primary" onClick={()=>editModal(record)}>
                             تعديل
                         </Button>
                     </Col>
@@ -60,7 +61,7 @@ const ToothType = () => {
                             okText="حذف"
                             cancelText="رجوع"
                         >
-                            <Button type="primary" danger >
+                            <Button icon={<DeleteOutlined/>} type="primary" danger >
                                 حذف
                             </Button>
                         </Popconfirm>
@@ -158,7 +159,7 @@ const ToothType = () => {
             <>
                 <Row gutter={16} style={{ paddingBottom: "20px", paddingTop: "20px" }}>
                     <Col>
-                        <Button type="primary" onClick={AddModal}>
+                        <Button icon={<PlusCircleOutlined/>} type="primary" onClick={AddModal}>
                             اضافة
                         </Button>
                     </Col>

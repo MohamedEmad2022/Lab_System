@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTooth } from '@fortawesome/free-solid-svg-icons';
-import { Alert, Button, Col, Form, Input, Row, Select } from 'antd'
+import { Alert, Button, Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd'
 import Upload from 'antd/es/upload/Upload'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,13 +10,29 @@ import { GetDoctors } from '../../store/AdminActions/doctorSlice'
 import { AddOrder, GetUnitTypes, toggleSelect } from '../../store/AdminActions/OrderSlice'
 import { GetToothType } from '../../store/AdminActions/toothTypeSlice'
 
+
+
+export const SelectComponent = ({ data, handleSelect, placeholder, allowClear }) => {
+
+    const options = data?.map((item, index) => {
+        return {
+            label: item.name,
+            value: item.id
+        }
+    })
+
+    return (
+        <Select options={options} onSelect={handleSelect} onClear={handleSelect} placeholder={placeholder} allowClear={allowClear} />
+    )
+}
+
 const NewPatient = () => {
 
     const [form] = Form.useForm()
     const dispatch = useDispatch()
     const [image, setImage] = useState(null);
     const state = useSelector(state => state)
-    const { selectedTooths, error } = useSelector(state => state.order)
+    let { selectedTooths, error, loading } = useSelector(state => state.order)
 
     const token = isAuthentication().token
 
@@ -26,23 +42,13 @@ const NewPatient = () => {
         dispatch(GetDoctors(token))
         dispatch(GetToothType(token))
         dispatch(GetUnitTypes(token))
+
+        selectedTooths = []
     }, [])
 
 
 
-    const SelectComponent = ({ data, handleSelect }) => {
-
-        const options = data?.map((item, index) => {
-            return {
-                label: item.name,
-                value: item.id
-            }
-        })
-
-        return (
-            <Select options={options} onChange={handleSelect} />
-        )
-    }
+    
     let formData = new FormData()
 
     const handleChange = (name) => (event) => {
@@ -54,6 +60,7 @@ const NewPatient = () => {
 
         const value = name === "attachment" ? event.fileList[0] : event;
         formData.append(name, value);
+        console.log(event)
 
     };
 
@@ -86,12 +93,11 @@ const NewPatient = () => {
         
         dispatch(toggleSelect(id));
         
-console.log(selectedTooths)
+
     }
 
     const Units = () => {
 
-        document.querySelectorAll(".tooth").forEach(element => element.classList.add('disabled'))
 
         return (
             <>
@@ -230,7 +236,7 @@ console.log(selectedTooths)
                             <Col span={11}>
                                 <input
                                   type="file"
-                                  onChange={
+                                  onSelect={
                                     handleSelect("attachment")
                                     // console.log(e.target);
                                     // setImage(e.target.files[0]);
@@ -242,21 +248,39 @@ console.log(selectedTooths)
                                 
                             </Col>
                             <Col span={11}>
-                                <Units/>
+
+                                {
+                                    loading ? <Spin tip="Loading" size="large" /> : <Units/>
+                                }
                             </Col>
                         </Row>
 
                         <Row justify="space-between">
                             <Col span={11}>
                                 <Form.Item
-                                    name='delivered'
-                                    label="delivered"
+                                    name='discount_type'
+                                    label="نوع الخصم"
                                 >
+                                    <Select onSelect={handleChange("discount_type")} placeholder='اختار نوع الخصم' allowClear>
+                                        <Select.Option value='FIXED'>FIXED</Select.Option>
+                                        <Select.Option value='PERCENTAGE'>PERCENTAGE</Select.Option>
+                                    </Select>
+
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={11}>
+                                <Form.Item
+                                    name='discount_value'
+                                    label="قيمة الخصم"
+                                >
+                                    <InputNumber onChange={handleChange("discount_value")} placeholder='0' />
 
                                 </Form.Item>
                             </Col>
 
                         </Row>
+
 
 
 
