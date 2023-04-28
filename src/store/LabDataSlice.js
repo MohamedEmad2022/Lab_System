@@ -76,7 +76,7 @@ export const LabDataSlice = createSlice({
             state.loading = false
             state.settings = action.payload.data
             state.fetchData = "fetch"
-            console.log(action)
+            
     
 
         },
@@ -84,7 +84,7 @@ export const LabDataSlice = createSlice({
 
             state.loading = false
             state.fetchData = null
-            console.log(action)
+            
         },
 
         //UpdateDoctor actions
@@ -96,14 +96,14 @@ export const LabDataSlice = createSlice({
         [UpdateLabData.fulfilled]: (state, action) => {
             state.loading = false
             state.updateSettings = 'update'
-            console.log(action)
+            
   
         },
         [UpdateLabData.rejected]: (state, action) => {
 
             state.loading = false
             state.updateSettings = 'update failed'
-            console.log(action)
+            
         },
     }
 })

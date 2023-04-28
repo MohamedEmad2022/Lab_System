@@ -53,14 +53,14 @@ export const LoginHand = createAsyncThunk("login/LoginHand", async (userData, th
             [LoginHand.fulfilled]: (state, action) => {
                 state.loading = false
                 state.user = action.payload
-                console.log(action)
+                
                 
             },
             [LoginHand.rejected]: (state, action) => {
 
                 state.loading = false
                 state.error = action.payload
-                console.log(action)
+                
             },
         }
     })

@@ -7,8 +7,9 @@ import config from "../../config";
 export const GetOrders = createAsyncThunk("order/GetOrders", async ({token, page}, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/orders?page=${page}`, {
-            method: "GET",
+        const response = await axios({
+            method: "get",
+            url: `${config.apiUrl}/orders?page=${page}`,
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -17,11 +18,11 @@ export const GetOrders = createAsyncThunk("order/GetOrders", async ({token, page
 
         })
 
-        const data = await response.json();
-        if (!response.ok) {
-            return rejectWithValue(data.error)
+        
+        if (response.status === 200) {
+           return fulfillWithValue(response.data)
         } else {
-            return fulfillWithValue(data)
+            return rejectWithValue(response.error)
         }
 
     } catch (error) {
@@ -32,8 +33,9 @@ export const GetOrders = createAsyncThunk("order/GetOrders", async ({token, page
 export const GetSingleOrder = createAsyncThunk("order/GetSingleOrder", async ({token, id}, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/orders/${id}`, {
-            method: "GET",
+        const response = await axios({
+            method: "get",
+            url: `${config.apiUrl}/orders/${id}`,
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -42,23 +44,23 @@ export const GetSingleOrder = createAsyncThunk("order/GetSingleOrder", async ({t
 
         })
 
-        const data = await response.json();
-        if (!response.ok) {
-            return rejectWithValue(data.error)
-        } else {
-            return fulfillWithValue(data)
-        }
-
-    } catch (error) {
-        throw rejectWithValue(error.message)
-    }
-})
+        if (response.status === 200) {
+            return fulfillWithValue(response.data)
+         } else {
+             return rejectWithValue(response.error)
+         }
+ 
+     } catch (error) {
+         throw rejectWithValue(error.message)
+     }
+ })
 
 export const GetUnitTypes = createAsyncThunk("order/GetUnitTypes", async (token, thunkAPI) => {
     const { rejectWithValue, fulfillWithValue } = thunkAPI
     try {
-        const response = await fetch(`${config.apiUrl}/unit-types`, {
-            method: "GET",
+        const response = await axios({
+            method: "get",
+            url: `${config.apiUrl}/unit-types`,
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -67,17 +69,16 @@ export const GetUnitTypes = createAsyncThunk("order/GetUnitTypes", async (token,
 
         })
 
-        const data = await response.json();
-        if (!response.ok) {
-            return rejectWithValue(data.error)
-        } else {
-            return fulfillWithValue(data)
-        }
-
-    } catch (error) {
-        throw rejectWithValue(error.message)
-    }
-})
+        if (response.status === 200) {
+            return fulfillWithValue(response.data)
+         } else {
+             return rejectWithValue(response.error)
+         }
+ 
+     } catch (error) {
+         throw rejectWithValue(error.message)
+     }
+ })
 
 
 export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI) => {
@@ -94,7 +95,6 @@ export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI)
             },
         });
 
-        console.log(response)
         
         if (response.status === 201) {
             return fulfillWithValue(response.data)
@@ -104,7 +104,7 @@ export const AddOrder = createAsyncThunk("order/AddOrder", async (obj, thunkAPI)
 
 
     } catch (error) {
-        console.log(error)
+       
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -116,7 +116,7 @@ export const UpdateOrder = createAsyncThunk("order/UpdateOrder", async (obj, thu
     try {
 
         const response = await axios({
-            method: 'POST',
+            method: 'post',
             url: `${config.apiUrl}/orders-update`,
             data: obj.formData,
             headers: {
@@ -134,7 +134,7 @@ export const UpdateOrder = createAsyncThunk("order/UpdateOrder", async (obj, thu
 
 
     } catch (error) {
-        console.log(error)
+       
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -157,7 +157,7 @@ export const DeleteOrder = createAsyncThunk("order/DeleteOrder", async ({id, tok
             },
         });
 
-        console.log(response)
+       
         
         if (response.status === 200) {
             return fulfillWithValue(response.data)
@@ -167,7 +167,7 @@ export const DeleteOrder = createAsyncThunk("order/DeleteOrder", async ({id, tok
 
 
     } catch (error) {
-        console.log(error)
+        
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -189,7 +189,7 @@ export const MarkAsPaid = createAsyncThunk("order/MarkAsPaid", async ({invoiceId
             },
         });
 
-        console.log(response)
+       
         
         if (response.status === 200) {
             return fulfillWithValue(response.data)
@@ -199,7 +199,7 @@ export const MarkAsPaid = createAsyncThunk("order/MarkAsPaid", async ({invoiceId
 
 
     } catch (error) {
-        console.log(error)
+        
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -222,7 +222,7 @@ export const MarkAsUnPaid = createAsyncThunk("order/MarkAsUnPaid", async ({invoi
             },
         });
 
-        console.log(response)
+        
         
         if (response.status === 200) {
             return fulfillWithValue(response.data)
@@ -232,7 +232,7 @@ export const MarkAsUnPaid = createAsyncThunk("order/MarkAsUnPaid", async ({invoi
 
 
     } catch (error) {
-        console.log(error)
+       
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -254,7 +254,7 @@ export const MarkAsDelivered = createAsyncThunk("order/MarkAsDelivered", async (
             },
         });
 
-        console.log(response)
+        
         
         if (response.status === 200) {
             return fulfillWithValue(response.data)
@@ -264,7 +264,7 @@ export const MarkAsDelivered = createAsyncThunk("order/MarkAsDelivered", async (
 
 
     } catch (error) {
-        console.log(error)
+        
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -298,7 +298,7 @@ export const SearchOrders = createAsyncThunk("order/SearchOrders", async ({value
             },
         });
 
-        console.log(response)
+        
         
         if (response.status === 200) {
             return fulfillWithValue(response.data)
@@ -308,7 +308,7 @@ export const SearchOrders = createAsyncThunk("order/SearchOrders", async ({value
 
 
     } catch (error) {
-        console.log(error)
+        
         throw rejectWithValue(error.response.data.message)
         
     }
@@ -326,6 +326,7 @@ export const OrderSlice = createSlice({
         error: null,
         loading: false,
         fetchOrders: '',
+        fetchSingleOrder: '',
         addOrder: '',
         updateOrder: '',
         deleteOrder: '',
@@ -360,15 +361,14 @@ export const OrderSlice = createSlice({
             state.selectedTooths = []
             state.fetchOrders = 'fetch'
 
-            console.log(action)
-
+           
 
         },
         [GetOrders.rejected]: (state, action) => {
 
             state.loading = false
             state.fetchOrders = 'fetch failed'
-            console.log(action)
+            
         },
 
         //SearchOrders actions
@@ -384,7 +384,7 @@ export const OrderSlice = createSlice({
             state.selectedTooths = []
             state.fetchOrders = 'fetch'
 
-            console.log(action)
+            
 
 
         },
@@ -392,33 +392,32 @@ export const OrderSlice = createSlice({
 
             state.loading = false
             state.fetchOrders = 'fetch failed'
-            console.log(action)
+            
         },
 
         //GetSingleOrder actions
         [GetSingleOrder.pending]: (state, action) => {
-            state.loading = true
-            state.fetchOrders = ''
+            
             state.selectedTooths = []
+            
         },
         [GetSingleOrder.fulfilled]: (state, action) => {
-            state.loading = false
+            
             state.singleOrder = action.payload.data
             state.selectedTooths = action.payload.data.units.map((unit)=>(
                 unit.unit_type.id
             ))
-            state.fetchOrders = 'fetch_order'
+            state.fetchSingleOrder = 'fetch_single_order'
 
-            console.log(action)
+            
 
 
         },
         [GetSingleOrder.rejected]: (state, action) => {
 
             state.loading = false
-            state.fetchOrders = 'fetch failed'
             state.selectedTooths = []
-            console.log(action)
+            
         },
 
 
@@ -437,7 +436,7 @@ export const OrderSlice = createSlice({
         [GetUnitTypes.rejected]: (state, action) => {
 
             state.loading = false
-            console.log(action)
+            
         },
 
         //AddOrder actions
@@ -483,7 +482,7 @@ export const OrderSlice = createSlice({
             state.updateOrder = 'update failed'
             state.successed = ""
             state.error = action.payload
-            console.log(action)
+            
         },
 
         //DeleteOrder actions
@@ -498,7 +497,7 @@ export const OrderSlice = createSlice({
             state.deleteOrder = 'delete'
             state.successed = action.payload.message
             state.error = null
-            console.log(action)
+            
         },
         [DeleteOrder.rejected]: (state, action) => {
 
@@ -506,7 +505,7 @@ export const OrderSlice = createSlice({
             state.deleteOrder = 'delete failed'
             state.successed = ''
             state.error = action.payload
-            console.log(action)
+            
         },
         //MarkAsPaid actions
         [MarkAsPaid.pending]: (state, action) => {
@@ -516,13 +515,13 @@ export const OrderSlice = createSlice({
         [MarkAsPaid.fulfilled]: (state, action) => {
             state.loading = false
             state.successed = action.payload.message
-            console.log(action)
+            
         },
         [MarkAsPaid.rejected]: (state, action) => {
 
             state.loading = false
             state.successed = ''
-            console.log(action)
+            
         },
          //MarkAsUnPaid actions
          [MarkAsUnPaid.pending]: (state, action) => {
@@ -532,13 +531,13 @@ export const OrderSlice = createSlice({
         [MarkAsUnPaid.fulfilled]: (state, action) => {
             state.loading = false
             state.successed = action.payload.message
-            console.log(action)
+            
         },
         [MarkAsUnPaid.rejected]: (state, action) => {
 
             state.loading = false
             state.successed = ''
-            console.log(action)
+            
         },
 
         //MarkAsDelivered actions
@@ -549,13 +548,13 @@ export const OrderSlice = createSlice({
         [MarkAsDelivered.fulfilled]: (state, action) => {
             state.loading = false
             state.successed = action.payload.data
-            console.log(action)
+            
         },
         [MarkAsDelivered.rejected]: (state, action) => {
 
             state.loading = false
             state.successed = ''
-            console.log(action)
+            
         },
     }
 })

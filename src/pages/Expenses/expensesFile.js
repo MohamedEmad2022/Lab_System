@@ -185,7 +185,7 @@ const ExpensesFile = () => {
             token,
             id: selectedExpense.id
         }
-        console.log(values)
+       
 
         dispatch(UpdateExpenses(obj))
         setOpen(false)

@@ -18,11 +18,7 @@ const ColorType = () => {
 
 
 
-    useEffect(() => {
-        dispatch(GetColorsTypes(isAuthentication().token))
-    }, [dispatch, updateColor, deleteColor, addColor])
-
-
+   
 
     const columns = [
         
@@ -64,7 +60,7 @@ const ColorType = () => {
 
     
 
-    const dataSource = fetchColors === "fetch" ? colors.map((item) => {
+    const dataSource =  colors.map((item) => {
         return {
             key: item.id,
             name: item.name,
@@ -72,7 +68,7 @@ const ColorType = () => {
             
         }
     })
-        : ""
+       
 
 
 

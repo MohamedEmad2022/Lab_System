@@ -140,7 +140,6 @@ export const ColorTypeSlice = createSlice({
             state.loading = false
             state.colors = action.payload.data
             state.fetchColors = 'fetch'
-            console.log(action)
             
             
             
@@ -150,7 +149,6 @@ export const ColorTypeSlice = createSlice({
 
             state.loading = false
             state.fetchColors = 'fetch failed'
-            console.log(action)
         },
 
         //AddColorType actions
@@ -162,7 +160,6 @@ export const ColorTypeSlice = createSlice({
         [AddColorType.fulfilled]: (state, action) => {
             state.loading = false
             state.addColor = 'add'
-            console.log(action)
             
             
             
@@ -172,7 +169,6 @@ export const ColorTypeSlice = createSlice({
 
             state.loading = false
             state.addColor = 'add failed'
-            console.log(action)
         },
 
         //UpdateColorType actions
@@ -184,14 +180,12 @@ export const ColorTypeSlice = createSlice({
         [UpdateColorType.fulfilled]: (state, action) => {
             state.loading = false
             state.updateColor = 'update'
-            console.log(action)
   
         },
         [UpdateColorType.rejected]: (state, action) => {
 
             state.loading = false
             state.updateColor = 'update failed'
-            console.log(action)
         },
 
          //DeleteColorType actions
@@ -203,14 +197,12 @@ export const ColorTypeSlice = createSlice({
         [DeleteColorType.fulfilled]: (state, action) => {
             state.loading = false
             state.deleteColor = 'delete'
-            console.log(action)
   
         },
         [DeleteColorType.rejected]: (state, action) => {
 
             state.loading = false
             state.deleteColor = 'delete failed'
-            console.log(action)
         },
     }
 })

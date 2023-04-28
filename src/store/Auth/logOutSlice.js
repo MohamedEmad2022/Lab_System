@@ -16,14 +16,7 @@ export const LogOutHand = createAsyncThunk("logout/LogOutHand", async (token, th
 
         dispatch(unauthentication())
         window.location.reload()
-        // const data = await response.json();
-        // if (response.status === 200) {
-        //     dispatch(unauthentication())
-        //     return fulfillWithValue(data)
-        // }else{
-        //     return rejectWithValue(data.error)
-        // }
-
+       
     
     }catch(error){
         throw rejectWithValue(error.message)
@@ -50,7 +43,7 @@ export const LogOutHand = createAsyncThunk("logout/LogOutHand", async (token, th
             [LogOutHand.fulfilled]: (state, action) => {
                 state.loading = false
                 state.user = null
-                console.log(action)
+                
                 
                 
             },
@@ -58,7 +51,7 @@ export const LogOutHand = createAsyncThunk("logout/LogOutHand", async (token, th
 
                 state.loading = false
                 state.error = action.payload
-                console.log(action)
+                
             },
         }
     })

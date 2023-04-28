@@ -19,12 +19,7 @@ const DoctorFile = () => {
 
 
 
-  useEffect(() => {
-
-    dispatch(GetDoctors(isAuthentication().token))
-
-  }, [dispatch, updateDoctor, deleteDoctor, addDoctor])
-
+  
 
 
   const columns = [
@@ -86,7 +81,7 @@ const DoctorFile = () => {
   ];
 
 
-  const dataSource = fetchDoctors === "fetch" ? doctors.map((item) => {
+  const dataSource =  doctors?.map((item) => {
     return {
       id: item.id,
       name: item.name,
@@ -98,7 +93,7 @@ const DoctorFile = () => {
 
     }
   })
-    : ""
+   
 
 
 

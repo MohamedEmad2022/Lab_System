@@ -19,9 +19,7 @@ const ToothType = () => {
 
 
 
-    useEffect(() => {
-        dispatch(GetToothType(isAuthentication().token))
-    }, [dispatch, updateType, deleteType, addType])
+    
 
 
 
@@ -72,7 +70,7 @@ const ToothType = () => {
     ];
 
 
-    const dataSource = fetchTypes === "fetch" ? types.map((item) => {
+    const dataSource = types.map((item) => {
         return {
             key: item.id,
             name: item.name,
@@ -80,7 +78,7 @@ const ToothType = () => {
             description: item.description,
         }
     })
-        : ""
+      
 
 
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isAuthentication } from '../../components/isAuthentication';
 import { AddExpensesType, DeleteExpensesType, GetExpensesTypes, selectType, UpdateExpensesType } from '../../store/Expenses/expensesTypeSlice';
 
-const AddExpensesTypes = () => {
+const ExpensesTypeFile = () => {
     const [form] = Form.useForm()
     const dispatch = useDispatch()
     const { expensesType, selectedType, fetchTypes, updateType, error, addType, deleteType, loading } = useSelector(state => state.expensesType)
@@ -237,4 +237,4 @@ const token = isAuthentication().token
     )
 }
 
-export default AddExpensesTypes
+export default ExpensesTypeFile

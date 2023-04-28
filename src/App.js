@@ -12,37 +12,12 @@ import { getThemeMode, themeMode } from './store/Theme/themeSlice';
 import Register from './pages/Auth/Register';
 import LogIn from './pages/Auth/login';
 import { isAuthentication } from './components/isAuthentication';
+import Invoice from './pages/Reception/invoice';
 
 function App() {
 
 
   const dispatch = useDispatch();
-  const { theme } = useSelector((state) => state.theme);
-
-  const lightTheme = {
-    token: {
-
-      colorBgBase: '#fff',
-      colorTextQuaternary: '#828181',
-      
-    }
-  }
-  const darkTheme = {
-    token: {
-
-      colorBgBase: '#001529',
-      colorPrimaryBg: '#001529',
-      colorText: 'white',
-      colorTextQuaternary: '#aeb0af',
-      controlOutlineWidth: "0",
-      colorErrorBg: "#ff4d4f"
-    }
-  }
-
-  
-  useEffect(() => {
-    dispatch(getThemeMode())
-  }, [dispatch])
 
 
   return (
@@ -51,21 +26,26 @@ function App() {
       <BrowserRouter>
 
         {isAuthentication() ? (
-          <ConfigProvider direction='rtl' theme={theme === "dark" ? darkTheme : lightTheme}>
-          <AppRoutes />
-          </ConfigProvider>
-      )
-      :
+          <>
 
-      <Routes>
-        <Route path='/register' element={<Register />} />
-        <Route path='/' element={<LogIn />} />
-        <Route path='*' element={<LogIn />} />
 
-      </Routes>
-          }
-    </BrowserRouter>
-      
+            <AppRoutes />
+
+
+          </>
+
+        )
+          :
+
+          <Routes>
+            <Route path='/register' element={<Register />} />
+            <Route path='/' element={<LogIn />} />
+            <Route path='*' element={<LogIn />} />
+
+          </Routes>
+        }
+      </BrowserRouter>
+
 
     </>
   );

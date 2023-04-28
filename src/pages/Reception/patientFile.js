@@ -1,7 +1,7 @@
 import { DeleteOutlined, PlusCircleTwoTone } from '@ant-design/icons';
 
 import { Alert, Avatar, Button, Card, Col, Form, Input, Modal, Popconfirm, Row, Table, Tag, Typography } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Filters from '../../components/Filters';
@@ -11,26 +11,18 @@ import { DeleteOrder, GetOrders } from '../../store/AdminActions/OrderSlice';
 function PatientFile() {
 
 
-    const [form] = Form.useForm()
     const dispatch = useDispatch()
     const { orders, fetchOrders, updateOrder, totalOrders, error, addOrder, deleteOrder, selectedType, loading } = useSelector(state => state.order)
-    const [open, setOpen] = useState(false);
-    const [edit, setEdit] = useState(false);
+    
 
 
 
     const token = isAuthentication().token
 
 
+    
 
-    useEffect(() => {
-        const obj = {
-            token,
-            page: 1
-        }
-        dispatch(GetOrders(obj))
-    }, [dispatch, updateOrder, deleteOrder, addOrder])
-
+    
 
 
     const columns = [
@@ -91,9 +83,9 @@ function PatientFile() {
             dataIndex: 'created_at',
             key: 'created_at',
             render: (_, record) => {
-                const ds = new Date(record?.created_at).toDateString()
+                const patientDate = new Date(record?.created_at).toLocaleDateString()
 
-                return <>{ds}</>
+                return <>{patientDate}</>
             }
 
         },
@@ -157,36 +149,7 @@ function PatientFile() {
         : ""
 
 
-
-
-
-
-    // const editOrder = (record) => {
-
-    //     form.setFieldsValue({
-    //         key: record.id,
-    //         attachment: record?.attachment,
-    //         patient_name: record?.patient_name,
-    //         doctor_name: record.doctor.name,
-    //         color: record.color.name,
-    //         tooth_type: record.tooth_type.name,
-    //         total_amount: record.invoice?.total_amount,
-    //         paid_amount: record.invoice?.paid_amount,
-    //         remaining_amount: record.invoice?.remaining_amount,
-    //         payment_status: record.invoice?.payment_status,
-    //         delivered: record.delivered,
-    //         created_at: record.created_at,
-    //         units: record.units.length,
-    //     })
-
-    //     setEdit(true)
-    //     setOpen(true);
-    // }
-
-
-
-
-
+        
 
 
 
@@ -226,8 +189,9 @@ function PatientFile() {
 
             <Table
                 style={{ marginTop: "10px" }}
-                loading={loading}
+                
                 columns={columns}
+                loading={loading}
                 dataSource={dataSource}
                 pagination={{
 

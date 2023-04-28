@@ -140,7 +140,6 @@ export const DoctorSlice = createSlice({
             state.loading = false
             state.doctors = action.payload.data.data
             state.fetchDoctors = 'fetch'
-            console.log(action)
     
 
         },
@@ -148,7 +147,6 @@ export const DoctorSlice = createSlice({
 
             state.loading = false
             state.fetchDoctors = 'fetch failed'
-            console.log(action)
         },
 
         //AddDoctor actions
@@ -160,17 +158,12 @@ export const DoctorSlice = createSlice({
         [AddDoctor.fulfilled]: (state, action) => {
             state.loading = false
             state.addDoctor = 'add'
-            console.log(action)
-            
-            
-            
 
         },
         [AddDoctor.rejected]: (state, action) => {
 
             state.loading = false
             state.addDoctor = 'add failed'
-            console.log(action)
         },
 
         //UpdateDoctor actions
@@ -182,14 +175,12 @@ export const DoctorSlice = createSlice({
         [UpdateDoctor.fulfilled]: (state, action) => {
             state.loading = false
             state.updateDoctor = 'update'
-            console.log(action)
   
         },
         [UpdateDoctor.rejected]: (state, action) => {
 
             state.loading = false
             state.updateDoctor = 'update failed'
-            console.log(action)
         },
 
          //DeleteDoctor actions
@@ -201,14 +192,12 @@ export const DoctorSlice = createSlice({
         [DeleteDoctor.fulfilled]: (state, action) => {
             state.loading = false
             state.deleteDoctor = 'delete'
-            console.log(action)
   
         },
         [DeleteDoctor.rejected]: (state, action) => {
 
             state.loading = false
             state.deleteDoctor = 'delete failed'
-            console.log(action)
         },
     }
 })

@@ -151,7 +151,7 @@ export const ExpensesTypeSlice = createSlice({
 
             state.loading = false
             state.fetchTypes = 'fetch failed'
-            console.log(action)
+            
         },
 
         //AddExpensesType actions
@@ -171,7 +171,7 @@ export const ExpensesTypeSlice = createSlice({
             state.loading = false
             state.addType = 'add failed'
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
 
         //UpdateExpensesType actions
@@ -193,7 +193,7 @@ export const ExpensesTypeSlice = createSlice({
             state.loading = false
             state.updateType = 'update failed'
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
 
         //DeleteExpensesType actions
@@ -214,7 +214,7 @@ export const ExpensesTypeSlice = createSlice({
 
             state.loading = false
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
     }
 })

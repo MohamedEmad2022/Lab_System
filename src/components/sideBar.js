@@ -11,17 +11,13 @@ const SideBar = () => {
   const {settings} = useSelector(state => state.settings)
 
   const token = isAuthentication().token
-  useEffect(()=>{
-
-    dispatch(GetLabData(token))
-
-  },[dispatch])
+  
 
     
       const items = [
        {
         key: '1',
-        label: <Link to={'/dashBoard'}>الصفحة الرئيسية</Link>,
+        label: <Link to={'/'}>الصفحة الرئيسية</Link>,
 
        },
        {
@@ -52,11 +48,11 @@ const SideBar = () => {
         children: [
           {
             key: 're',
-            label: <Link to={'/addExpensesType'}>اضافة بند مصاريف</Link>
+            label: <Link to={'/expensesTypeFile'}>اضافة بند مصاريف</Link>
           },
           {
             key: 'ui',
-            label: <Link to={'/addExpenses'}>ملف المصروفات</Link>
+            label: <Link to={'/expensesFile'}>ملف المصروفات</Link>
           },
           
         ]

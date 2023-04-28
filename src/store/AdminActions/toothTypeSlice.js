@@ -149,7 +149,7 @@ export const ToothTypeSlice = createSlice({
 
             state.loading = false
             state.fetchTypes = 'fetch failed'
-            console.log(action)
+            
         },
 
         //AddToothType actions
@@ -170,7 +170,7 @@ export const ToothTypeSlice = createSlice({
             state.loading = false
             state.addType = 'add failed'
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
 
         //UpdateToothType actions
@@ -192,7 +192,7 @@ export const ToothTypeSlice = createSlice({
             state.loading = false
             state.updateType = 'update failed'
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
 
         //DeleteToothType actions
@@ -213,7 +213,7 @@ export const ToothTypeSlice = createSlice({
 
             state.loading = false
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
     }
 })

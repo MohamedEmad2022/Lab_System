@@ -72,7 +72,7 @@ export const UpdateExpenses = createAsyncThunk("expensesType/UpdateExpenses", as
         })
 
 
-        console.log(response)
+        
 
         const data = await response.json();
         if (!response.ok) {
@@ -157,7 +157,7 @@ export const ExpensesSlice = createSlice({
 
             state.loading = false
             state.fetchExpenses = 'fetch failed'
-            console.log(action)
+            
         },
 
         //AddExpenses actions
@@ -177,7 +177,7 @@ export const ExpensesSlice = createSlice({
             state.loading = false
             state.addExpense = 'add failed'
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
 
         //UpdateExpenses actions
@@ -199,7 +199,7 @@ export const ExpensesSlice = createSlice({
             state.loading = false
             state.updateExpense = 'update failed'
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
 
         //DeleteExpenses actions
@@ -220,7 +220,7 @@ export const ExpensesSlice = createSlice({
 
             state.loading = false
             state.error = "حدث خطأ"
-            console.log(action)
+            
         },
     }
 })
