@@ -25,14 +25,15 @@ import {
 } from "../../store/AdminActions/assetSlice.js";
 
 const Assets = () => {
-  let { assets, loading , selectedAsset ,success } = useSelector( state => state.assets);
+  let { assets, loading, selectedAsset, success } = useSelector(
+    (state) => state.assets
+  );
   const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
-
-  assets =  assets.map((asset) => {
+  assets = assets.map((asset) => {
     return { ...asset, key: asset.id };
   });
 
@@ -82,7 +83,6 @@ const Assets = () => {
     },
   ];
 
-
   const handleFinish = (values) => {
     edit ? handleUpdateAsset(values) : handleAddAsset(values);
     setOpen(false);
@@ -92,14 +92,13 @@ const Assets = () => {
     dispatch(createAsset({ payload: values }));
   };
   const handleUpdateAsset = (values) => {
-    values = {...values,id:selectedAsset.id}
-    dispatch(updateAsset({payload:values}))
+    values = { ...values, id: selectedAsset.id };
+    dispatch(updateAsset({ payload: values }));
     console.log(values);
-
   };
   const handleDeleteAsset = (id) => {
-    dispatch(deleteAsset({id}))
-}
+    dispatch(deleteAsset({ id }));
+  };
   const handleCancel = () => {
     setOpen(false);
   };
@@ -115,8 +114,8 @@ const Assets = () => {
   const AddModal = () => {
     form.setFieldsValue({
       name: "",
-      cost:0,
-      notes:""
+      cost: 0,
+      notes: "",
     });
     setEdit(false);
     setOpen(true);
@@ -131,19 +130,6 @@ const Assets = () => {
     setEdit(true);
     setOpen(true);
   };
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-  const hasSelected = selectedRowKeys.length > 0;
 
   const modalUI = () => {
     return (
@@ -205,11 +191,7 @@ const Assets = () => {
   return (
     <div>
       {modalUI()}
-      <div style={{ marginBottom: 16 }}>
-        <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
-        </span>
-      </div>
+    
       <Row gutter={16} style={{ paddingBottom: "20px", paddingTop: "20px" }}>
         <Col>
           <Button
@@ -223,7 +205,6 @@ const Assets = () => {
       </Row>
       <Table
         loading={loading}
-        rowSelection={rowSelection}
         columns={columns}
         dataSource={assets}
       />
