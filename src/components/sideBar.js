@@ -22,46 +22,62 @@ const SideBar = () => {
        },
        {
         key: '2',
-        label: 'الريسيبشن',
+        label: 'الحالات والتركيبات',
         children: [
           {
             key: 'add',
-            label: <Link to={'/patientFile'}>ملف المرضى</Link>
+            label: <Link to={'/patientFile'}>الحالات</Link>
           },
           {
             key: 'tt',
-            label: <Link to={'/toothType'}>ملف مواد التركيبات</Link>
+            label: <Link to={'/toothType'}> مواد التركيبات</Link>
           },
           {
             key: 'ct',
-            label: <Link to={'/colorType'}>ملف الوان التركيبات</Link>
+            label: <Link to={'/colorType'}> الوان التركيبات</Link>
           },
           {
             key: 'df',
-            label: <Link to={'/doctorFile'}>ملف الاطباء</Link>
+            label: <Link to={'/doctorFile'}> الاطباء</Link>
           },
         ]
        },
        {
         key: '55',
-        label: 'ادارة المصروفات',
+        label: 'المصروفات',
         children: [
           {
             key: 're',
-            label: <Link to={'/expensesTypeFile'}>اضافة بند مصاريف</Link>
+            label: <Link to={'/expensesTypeFile'}>
+ أنواع المصروفات  
+            </Link>
           },
           {
             key: 'ui',
-            label: <Link to={'/expensesFile'}>ملف المصروفات</Link>
+            label: <Link to={'/expensesFile'}> المصروفات</Link>
           },
           
         ]
        },
-       {
-        key: 'lab',
-        label: <Link to={'/labData'}>بيانات المعمل</Link>,
 
-       },
+       {
+        key: 'lab_management',
+        label: 'إدارة المعمل',
+        children: [
+          {
+            key: 'assets',
+            label: <Link to={'/assets'}>
+          الأصول الثابتة
+              </Link>
+          },
+          {
+            key: 'lab',
+            label: <Link to={'/labData'}>بيانات المعمل</Link>,
+    
+           },          
+        ]
+       }
+      
       ]
       
       

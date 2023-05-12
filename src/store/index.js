@@ -10,7 +10,7 @@ import order from "./AdminActions/OrderSlice"
 import settings from "./LabDataSlice"
 import expensesType from "./Expenses/expensesTypeSlice"
 import expenses from "./Expenses/expensesSlice"
-
+import assetsReducer from "./AdminActions/assetSlice";
 
 
 export default configureStore({
@@ -25,6 +25,7 @@ export default configureStore({
         order,
         settings,
         expensesType,
-        expenses
+        expenses,
+        assets:assetsReducer
     }
 })

@@ -6,7 +6,7 @@ import LogIn from '../pages/Auth/login'
 import Register from '../pages/Auth/Register'
 import { getThemeMode } from '../store/Theme/themeSlice'
 
-
+import Assets from '../pages/Assets/Assets'
 
 const AppRoutes = () => {
 
@@ -63,10 +63,6 @@ const AppRoutes = () => {
   const NotFound = lazy(() => import("../pages/404"))
 
 
-
-
-
-
   const Loading = () => (
     <>
       <Row justify="center" style={{ textAlign: "center", height: "100vh" }} align="middle" >
@@ -99,7 +95,7 @@ const AppRoutes = () => {
             <Route path='expensesTypeFile' element={<ExpensesTypeFile />} />
             <Route path='expensesFile' element={<ExpensesFile />} />
             <Route path='labData' element={<LabData />} />
-
+            <Route path='assets' element={<Assets />} />
           </Route>
           <Route path='invoice/:id' element={
             <ConfigProvider direction='rtl'>
