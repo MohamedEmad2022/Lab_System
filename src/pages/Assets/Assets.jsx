@@ -25,9 +25,7 @@ import {
 } from "../../store/AdminActions/assetSlice.js";
 
 const Assets = () => {
-  let { assets, loading, selectedAsset, success } = useSelector(
-    (state) => state.assets
-  );
+  let { assets, loading, selectedAsset, success } = useSelector(state => state.assets);
   const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
@@ -91,6 +89,7 @@ const Assets = () => {
   const handleAddAsset = (values) => {
     dispatch(createAsset({ payload: values }));
   };
+
   const handleUpdateAsset = (values) => {
     values = { ...values, id: selectedAsset.id };
     dispatch(updateAsset({ payload: values }));
